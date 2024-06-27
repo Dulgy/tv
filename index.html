@@ -16,8 +16,6 @@
         .stream-container {
             flex: 3;
             margin-right: 1rem;
-            display: flex;
-            flex-direction: column;
         }
         .chat-container {
             flex: 1;
@@ -65,12 +63,16 @@
             const youtubeEmbed = `https://www.youtube.com/embed/live_stream?channel=${config.youtube_channel_id}`;
             const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
             const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
-            const recentVideoEmbed = `https://www.youtube.com/embed?listType=user_uploads&list=${config.youtube_channel_id}`;
 
-            document.getElementById('youtube-stream').src = youtubeEmbed;
-            document.getElementById('twitch-stream').src = twitchEmbed;
-            document.getElementById('rumble-stream').src = rumbleEmbed;
-            document.getElementById('recent-video').src = recentVideoEmbed;
+            const iframe = document.getElementById('live-stream');
+            iframe.src = youtubeEmbed;
+
+            iframe.onerror = function() {
+                iframe.src = twitchEmbed;
+                iframe.onerror = function() {
+                    iframe.src = rumbleEmbed;
+                }
+            }
         }
 
         function switchTab(tabId) {
@@ -82,7 +84,7 @@
 
         window.onload = async function() {
             await loadStream();
-            switchTab('youtube-stream');
+            switchTab('twitch-chat');
         }
     </script>
 </head>
@@ -101,24 +103,11 @@
     </nav>
     <main class="main-container">
         <div class="stream-container">
-            <div class="tabs">
-                <button onclick="switchTab('youtube-stream')">YouTube Live</button>
-                <button onclick="switchTab('twitch-stream')">Twitch Live</button>
-                <button onclick="switchTab('rumble-stream')">Rumble Live</button>
-                <button onclick="switchTab('recent-video')">Recent YouTube Video</button>
-            </div>
-            <div id="youtube-stream" class="tab-content active">
-                <iframe src=""></iframe>
-            </div>
-            <div id="twitch-stream" class="tab-content">
-                <iframe src=""></iframe>
-            </div>
-            <div id="rumble-stream" class="tab-content">
-                <iframe src=""></iframe>
-            </div>
-            <div id="recent-video" class="tab-content">
-                <iframe src=""></iframe>
-            </div>
+            <hgroup>
+                <h2>Live Stream</h2>
+                <h3>Watch my live streams below</h3>
+            </hgroup>
+            <iframe id="live-stream" src=""></iframe>
         </div>
         <div class="chat-container">
             <div class="tabs">
@@ -151,7 +140,7 @@
         window.onload = async function() {
             await loadStream();
             await loadChat();
-            switchTab('youtube-stream');
+            switchTab('twitch-chat');
         }
     </script>
 </body>
