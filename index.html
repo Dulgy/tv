@@ -6,19 +6,17 @@
     <title>Live Stream</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <style>
-		html, body {
+        html, body {
             margin: 0;
             padding: 0;
             height: 100%;
         }
         body {
-            margin: 0;
-			display: flex;
+            display: flex;
             flex-direction: column;
         }
         .main-container {
-            padding-top: 0;
-			display: flex;
+            display: flex;
             justify-content: space-between;
             flex: 1;
         }
@@ -36,7 +34,7 @@
         .tabs, .stream-buttons {
             display: flex;
             justify-content: center;
-            margin-bottom: 0.5rem; /* Reduced margin */
+            margin-bottom: 0.5rem;
         }
         .tabs button, .stream-buttons button {
             flex: 1;
@@ -69,16 +67,57 @@
         }
         iframe {
             width: 100%;
-            height: calc(100vh - 4rem); /* Adjusted height to fill screen minus margins */
+            height: calc(100vh - 4rem);
             border: none;
         }
         .chat-iframe {
             width: 100%;
-            height: calc(100vh - 4rem); /* Adjusted height to fill screen minus margins */
+            height: calc(100vh - 4rem);
             border: none;
         }
         nav {
             margin-top: 0;
+        }
+        .menu-button {
+            background-color: grey;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-button div {
+            width: 1.5rem;
+            height: 2px;
+            background-color: white;
+            margin: 3px 0;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 1rem 0;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
         }
     </style>
     <script>
@@ -121,13 +160,42 @@
             document.getElementById(tabId).classList.add('active');
         }
 
+        async function loadMenu() {
+            const response = await fetch('menu.json');
+            const menuItems = await response.json();
+            const menuList = document.getElementById('menu-list');
+            menuList.innerHTML = '';
+            menuItems.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.textContent = item.name;
+                li.appendChild(a);
+                menuList.appendChild(li);
+            });
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
         window.onload = async function() {
             await loadStream();
+            await loadChat();
             switchTab('twitch-chat');
+            await loadMenu();
         }
     </script>
 </head>
 <body>
+    <button class="menu-button" onclick="toggleSidebar()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </button>
+    <div id="sidebar" class="sidebar">
+        <ul id="menu-list"></ul>
+    </div>
     <main class="main-container">
         <div class="stream-container">
             <div class="stream-buttons">
@@ -181,6 +249,7 @@
             await loadStream();
             await loadChat();
             switchTab('twitch-chat');
+            await loadMenu();
         }
     </script>
 </body>
