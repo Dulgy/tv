@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <style>
         body {
-            padding: 2rem;
             display: flex;
             flex-direction: column;
             height: 100vh;
+            margin: 0;
         }
         .main-container {
             display: flex;
@@ -22,7 +22,7 @@
             margin-right: 1rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
         }
         .chat-container {
             flex: 1;
@@ -66,12 +66,12 @@
         }
         iframe {
             width: 100%;
-            height: calc(100vh - 4rem - 2rem - 1rem); /* Adjusted height to fill screen minus margins */
+            height: calc(100vh - 6rem); /* Adjusted height to fill screen minus margins */
             border: none;
         }
         .chat-iframe {
             width: 100%;
-            height: calc(100vh - 4rem - 2rem - 1rem); /* Adjusted height to fill screen minus margins */
+            height: calc(100vh - 6rem); /* Adjusted height to fill screen minus margins */
             border: none;
         }
         nav {
