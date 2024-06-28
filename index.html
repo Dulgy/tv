@@ -33,17 +33,21 @@
             padding: 0.5rem;
             margin: 0 0.5rem;
         }
-        .stream-buttons button {
+        .stream-buttons button, .tabs button {
             color: white;
         }
-        .stream-buttons .youtube-btn {
+        .stream-buttons .youtube-btn, .tabs .youtube-btn {
             background-color: red;
         }
-        .stream-buttons .twitch-btn {
+        .stream-buttons .twitch-btn, .tabs .twitch-btn {
             background-color: #9146FF;
         }
-        .stream-buttons .rumble-btn {
+        .stream-buttons .rumble-btn, .tabs .rumble-btn {
             background-color: lightgreen;
+        }
+        .tabs img {
+            height: 20px;
+            width: 20px;
         }
         .tab-content {
             display: none;
@@ -134,9 +138,9 @@
         </div>
         <div class="chat-container">
             <div class="tabs">
-                <button onclick="switchTab('twitch-chat')">Twitch Chat</button>
-                <button onclick="switchTab('youtube-chat')">YouTube Chat</button>
-                <button onclick="switchTab('rumble-chat')">Rumble Chat</button>
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="Twitch.png" alt="Twitch Chat"></button>
+                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="YouTube.png" alt="YouTube Chat"></button>
+                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="Rumble.png" alt="Rumble Chat"></button>
             </div>
             <div id="twitch-chat" class="tab-content active">
                 <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
