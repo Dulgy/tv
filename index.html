@@ -31,31 +31,36 @@
             flex-direction: column;
             height: 100%;
         }
-        .tabs, .stream-buttons {
+        .stream-buttons {
             display: flex;
+            align-items: center;
             justify-content: center;
             margin-bottom: 0.5rem;
         }
-        .tabs button, .stream-buttons button {
+        .stream-buttons button {
             flex: 1;
             padding: 0.5rem;
-            margin: 0 0.5rem;
+            margin: 0 0.25rem;
         }
-        .stream-buttons button, .tabs button {
-            color: white;
+        .menu-button {
+            background: none;
+            border: none;
+            padding: 0;
+            margin-right: 0.5rem;
+            cursor: pointer;
         }
-        .stream-buttons .youtube-btn, .tabs .youtube-btn {
+        .menu-button img {
+            height: 30px;
+            width: 30px;
+        }
+        .stream-buttons .youtube-btn {
             background-color: red;
         }
-        .stream-buttons .twitch-btn, .tabs .twitch-btn {
+        .stream-buttons .twitch-btn {
             background-color: #9146FF;
         }
-        .stream-buttons .rumble-btn, .tabs .rumble-btn {
+        .stream-buttons .rumble-btn {
             background-color: lightgreen;
-        }
-        .tabs img {
-            height: 20px;
-            width: 20px;
         }
         .tab-content {
             display: none;
@@ -74,24 +79,6 @@
             width: 100%;
             height: calc(100vh - 4rem);
             border: none;
-        }
-        nav {
-            margin-top: 0;
-        }
-        .menu-button {
-            background-color: grey;
-            border: none;
-            padding: 0.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .menu-button div {
-            width: 1.5rem;
-            height: 2px;
-            background-color: white;
-            margin: 3px 0;
         }
         .sidebar {
             position: fixed;
@@ -188,17 +175,12 @@
     </script>
 </head>
 <body>
-    <button class="menu-button" onclick="toggleSidebar()">
-        <div></div>
-        <div></div>
-        <div></div>
-    </button>
-    <div id="sidebar" class="sidebar">
-        <ul id="menu-list"></ul>
-    </div>
     <main class="main-container">
         <div class="stream-container">
             <div class="stream-buttons">
+                <button class="menu-button" onclick="toggleSidebar()">
+                    <img src="menu.png" alt="Menu">
+                </button>
                 <button class="youtube-btn" onclick="loadStream('youtube')">YouTube</button>
                 <button class="twitch-btn" onclick="loadStream('twitch')">Twitch</button>
                 <button class="rumble-btn" onclick="loadStream('rumble')">Rumble</button>
@@ -222,6 +204,9 @@
             </div>
         </div>
     </main>
+    <div id="sidebar" class="sidebar">
+        <ul id="menu-list"></ul>
+    </div>
     <footer class="container">
         <nav class="container-fluid">
             <ul>
