@@ -12,11 +12,19 @@
             height: 100%;
         }
         body {
-            display: flex;
+            margin: 0;
+			display: flex;
             flex-direction: column;
         }
+		nav {
+            margin-top: 0;
+        }
+		main {
+			margin-top: 0;
+		}
         .main-container {
-            display: flex;
+            padding-top: 0;
+			display: flex;
             justify-content: space-between;
             flex: 1;
         }
@@ -37,21 +45,25 @@
             justify-content: center;
             margin-bottom: 0.5rem;
         }
-        .stream-buttons button {
-            flex: 1;
-            padding: 0.5rem;
-            margin: 0 0.25rem;
-        }
         .menu-button {
             background: none;
             border: none;
-            padding: 0;
-            margin-right: 0.5rem;
             cursor: pointer;
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
         }
         .menu-button img {
-            height: 30px;
-            width: 30px;
+            width: 100%;
+            height: 100%;
+        }
+        .stream-buttons .youtube-btn,
+        .stream-buttons .twitch-btn,
+        .stream-buttons .rumble-btn {
+            flex: 1;
+            padding: 0.5rem;
+            margin: 0 0.25rem;
+            color: white;
         }
         .stream-buttons .youtube-btn {
             background-color: red;
@@ -61,6 +73,29 @@
         }
         .stream-buttons .rumble-btn {
             background-color: lightgreen;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        .tabs button {
+            padding: 0.5rem;
+            margin: 0 0.25rem;
+            color: white;
+        }
+        .tabs .youtube-btn {
+            background-color: red;
+        }
+        .tabs .twitch-btn {
+            background-color: #9146FF;
+        }
+        .tabs .rumble-btn {
+            background-color: lightgreen;
+        }
+        .tabs img {
+            height: 20px;
+            width: 20px;
         }
         .tab-content {
             display: none;
@@ -106,6 +141,12 @@
             color: white;
             text-decoration: none;
         }
+        .sidebar .menu-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
     </style>
     <script>
         async function loadConfig() {
@@ -205,6 +246,9 @@
         </div>
     </main>
     <div id="sidebar" class="sidebar">
+        <button class="menu-button" onclick="toggleSidebar()">
+            <img src="menu.png" alt="Menu">
+        </button>
         <ul id="menu-list"></ul>
     </div>
     <footer class="container">
