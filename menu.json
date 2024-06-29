@@ -1,22 +1,38 @@
 [
     {
         "name": "Home",
-        "url": "#"
+        "url": "https://dulgy.github.io/tv/"
+    },
+    {
+        "name": "Schedule",
+        "url": "schudule.html"
     },
     {
         "name": "Past Videos",
-        "url": "#"
+        "url": "videos.html"
     },
     {
         "name": "Live Stream",
-        "url": "#"
+        "url": "/"
+    },
+    {
+        "name": "Guides",
+        "url": "guides.html"
+    },
+    {
+        "name": "Watch-a-long",
+        "url": "/"
     },
     {
         "name": "Merch",
-        "url": "#"
+        "url": "merch.html"
+    },
+    {
+        "name": "Socials",
+        "url": "socials.html"
     },
     {
         "name": "Donate",
-        "url": "#"
+        "url": "#donate"
     }
 ]
