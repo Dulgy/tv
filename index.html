@@ -12,19 +12,18 @@
             height: 100%;
         }
         body {
-            margin: 0;
-			display: flex;
+            display: flex;
             flex-direction: column;
         }
-		nav {
+        nav {
             margin-top: 0;
         }
-		main {
-			margin-top: 0;
-		}
+        main {
+            margin-top: 0;
+        }
         .main-container {
             padding-top: 0;
-			display: flex;
+            display: flex;
             justify-content: space-between;
             flex: 1;
         }
@@ -47,11 +46,14 @@
         }
         .menu-button {
             background: none;
-            border: none;
+            border: 1px solid lightgrey;
             cursor: pointer;
             width: 40px;
             height: 40px;
             margin-right: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .menu-button img {
             width: 100%;
@@ -146,7 +148,6 @@
             top: 10px;
             left: 10px;
         }
-
     </style>
     <script>
         async function loadConfig() {
