@@ -263,7 +263,7 @@
         async function loadChat() {
             const config = await loadConfig();
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
-            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_channel_id}&embed_domain=${window.location.hostname}`;
+            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_channel_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
         }
 
