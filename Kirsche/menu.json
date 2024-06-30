@@ -1,14 +1,14 @@
 [
     {
         "name": "Home",
-        "url": "https://dulgy.github.io/tv/"
+        "url": "https://dulgy.github.io/tv/Kirsche"
     },
     {
-        "name": "Schedule",
+        "name": "Schedule(inc)",
         "url": "schudule.html"
     },
     {
-        "name": "Past Videos",
+        "name": "Past Videos(inc)",
         "url": "videos.html"
     },
     {
@@ -19,17 +19,17 @@
         "name": "",
         "url": "guides.html"
     },
-    {
-        "name": "Gamersupps 10% off link",
+        {
+        "name": "Discord",
+        "url": "https://discord.gg/kirschettv"
+    },
+	{
+        "name": "Gamersupps 10% off",
         "url": "https://gamersupps.gg/KIRSCHE"
     },
     {
         "name": "Spicy Cat Merch",
         "url": "https://uwumarket.us/collections/kirsche"
-    },
-    {
-        "name": "Discord",
-        "url": "http://discord.gg/kirschettv"
     },
     {
         "name": "Tip Jar",
