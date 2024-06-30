@@ -158,10 +158,23 @@
     </style>
     <script>
         async function loadConfig() {
-            const response = await fetch('config.json');
-            const config = await response.json();
-            return config;
-        }
+			const response = await fetch('config.json');
+			const config = await response.json();
+
+			const apiKey = config.youtube_api_key; // Add your API key in config.json
+			const channelId = config.youtube_channel_id;
+
+			const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
+			const videoResponse = await fetch(apiUrl);
+			const videoData = await videoResponse.json();
+
+			if (videoData.items.length > 0) {
+				config.youtube_live_video_id = videoData.items[0].id.videoId;
+			}
+
+			return config;
+		}
+
 
         async function loadStream(service) {
             const config = await loadConfig();
@@ -263,7 +276,7 @@
         async function loadChat() {
             const config = await loadConfig();
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
-            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_channel_id}&embed_domain=${window.location.hostname}`;
+            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
         }
 
