@@ -177,30 +177,30 @@
 
 
         async function loadStream(service) {
-            const config = await loadConfig();
-            const youtubeEmbed = `https://www.youtube.com/embed/live_stream?channel=${config.youtube_channel_id}`;
-            const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
-            const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
+			const config = await loadConfig();
+			const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
+			const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
+			const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
 
-            const iframe = document.getElementById('live-stream');
+			const iframe = document.getElementById('live-stream');
 
-            if (service === 'youtube') {
-                iframe.src = youtubeEmbed;
-            } else if (service === 'twitch') {
-                iframe.src = twitchEmbed;
-            } else if (service === 'rumble') {
-                iframe.src = rumbleEmbed;
-            } else {
-                iframe.src = youtubeEmbed;
+			if (service === 'youtube') {
+				iframe.src = youtubeEmbed;
+			} else if (service === 'twitch') {
+				iframe.src = twitchEmbed;
+			} else if (service === 'rumble') {
+				iframe.src = rumbleEmbed;
+			} else {
+				iframe.src = youtubeEmbed;
 
-                iframe.onerror = function() {
-                    iframe.src = twitchEmbed;
-                    iframe.onerror = function() {
-                        iframe.src = rumbleEmbed;
-                    }
-                }
-            }
-        }
+				iframe.onerror = function() {
+					iframe.src = twitchEmbed;
+					iframe.onerror = function() {
+						iframe.src = rumbleEmbed;
+            };
+        };
+    }
+}
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
