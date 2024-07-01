@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,37 +12,46 @@
             padding: 0;
             height: 100%;
         }
+
         body {
             display: flex;
             flex-direction: column;
         }
+
         nav {
             margin-top: 0;
         }
+
         main {
             margin-top: 0;
         }
+
         .main-container {
             padding-top: 0;
             display: flex;
             flex: 1;
         }
+
         .credits-container {
             flex: 1;
             padding: 2rem;
         }
+
         .credits-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
         }
+
         .credit-card {
             text-align: center;
         }
+
         .credit-card a {
             display: block;
             text-decoration: none;
         }
+
         .credit-card img {
             border-radius: 10px;
             width: 100px;
@@ -49,21 +59,26 @@
             object-fit: cover;
             transition: transform 0.3s ease;
         }
+
         .credit-card img:hover {
             transform: scale(1.1);
         }
+
         .credit-card a img {
             margin-bottom: 1rem;
         }
+
         .credit-card a span {
             display: block;
             font-weight: bold;
         }
+
         .credit-card p {
             margin: 0.5rem 0;
             font-style: italic;
         }
-		.sidebar {
+
+        .sidebar {
             position: fixed;
             top: 0;
             left: 0;
@@ -75,49 +90,45 @@
             transform: translateX(-100%);
             transition: transform 0.3s ease;
         }
+
         .sidebar.active {
             transform: translateX(0);
         }
+
         .sidebar ul {
             list-style-type: none;
             padding: 2.25rem 0 0 0;
         }
+
         .sidebar ul li {
             margin: 1rem 0;
         }
+
         .sidebar ul li a {
             color: white;
             text-decoration: none;
         }
-        .sidebar .menu-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
+
         .menu-button {
-            background: 1px solid lightgrey;
+            background: lightgrey;
             color: white;
-			cursor: pointer;
+            cursor: pointer;
             width: 50px;
             height: 50px;
-            margin-top: 0;
-			margin-right: 0.5rem;
-			margin-bottom: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: none;
+            margin: 0;
+            padding: 0;
         }
+
         .menu-button img {
             width: 100%;
             height: 100%;
         }
-        }
     </style>
     <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
         async function loadCredits() {
             try {
                 const response = await fetch('credits.json');
@@ -175,13 +186,13 @@
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-
         window.onload = async function() {
             await loadCredits();
             await loadMenu();
         }
     </script>
 </head>
+
 <body>
     <button class="menu-button" onclick="toggleSidebar()">
         <img src="menu.png" alt="Menu">
@@ -198,4 +209,5 @@
         <ul id="menu-list"></ul>
     </div>
 </body>
+
 </html>
