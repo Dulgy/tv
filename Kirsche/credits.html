@@ -41,7 +41,6 @@
         .credit-card a {
             display: block;
             text-decoration: none;
-            color: inherit;
         }
         .credit-card img {
             border-radius: 10px;
@@ -64,7 +63,7 @@
             margin: 0.5rem 0;
             font-style: italic;
         }
-        .sidebar {
+		.sidebar {
             position: fixed;
             top: 0;
             left: 0;
@@ -90,34 +89,28 @@
             color: white;
             text-decoration: none;
         }
-        .menu-button {
-            background-color: lightblue;
-            color: white;
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            transition: background-color 0.3s ease;
+        .sidebar .menu-button {
             position: absolute;
             top: 10px;
             left: 10px;
+        }
+        .menu-button {
+            background: 1px solid lightgrey;
+            color: white;
+			cursor: pointer;
+            width: 50px;
+            height: 50px;
+            margin-top: 0;
+			margin-right: 0.5rem;
+			margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .menu-button img {
             width: 100%;
             height: 100%;
         }
-        .menu-button:hover {
-            background-color: deepskyblue;
-        }
-        .menu-button-large {
-            width: 100%;
-            height: 50px;
-            position: relative;
-            top: 10px;
-            left: 10px;
         }
     </style>
     <script>
@@ -164,26 +157,24 @@
         }
 
         async function loadMenu() {
-            try {
-                const response = await fetch('menu.json');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const menuItems = await response.json();
-                const menuList = document.getElementById('menu-list');
-                menuList.innerHTML = '';
-                menuItems.forEach(item => {
-                    const li = document.createElement('li');
-                    const a = document.createElement('a');
-                    a.href = item.url;
-                    a.textContent = item.name;
-                    li.appendChild(a);
-                    menuList.appendChild(li);
-                });
-            } catch (error) {
-                console.error('Error loading menu:', error);
-            }
+            const response = await fetch('menu.json');
+            const menuItems = await response.json();
+            const menuList = document.getElementById('menu-list');
+            menuList.innerHTML = '';
+            menuItems.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.textContent = item.name;
+                li.appendChild(a);
+                menuList.appendChild(li);
+            });
         }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
 
         window.onload = async function() {
             await loadCredits();
@@ -201,7 +192,7 @@
         </div>
     </main>
     <div id="sidebar" class="sidebar">
-        <button class="menu-button-large" onclick="toggleSidebar()">
+        <button class="menu-button" onclick="toggleSidebar()">
             <img src="menu.png" alt="Menu">
         </button>
         <ul id="menu-list"></ul>
