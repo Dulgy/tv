@@ -4,16 +4,16 @@
         "url": "https://dulgy.github.io/tv/Kirsche"
     },
     {
-        "name": "Schedule(inc)",
+        "name": "Schedule (inc)",
         "url": "schudule.html"
     },
     {
-        "name": "Past Videos(inc)",
-        "url": "videos.html"
+        "name": "Old Twitch VODs",
+        "url": "https://www.youtube.com/@KirscheVODs"
     },
     {
         "name": "OnlyKirsche",
-        "url": "#notcreatedyoudegenerate"
+        "url": "#doesnotexistyoudegenerate"
     },
     {
         "name": "Pineapple Swinger",
@@ -22,6 +22,14 @@
         {
         "name": "Discord",
         "url": "https://discord.gg/kirschettv"
+    },
+    {
+        "name": "Crime Boss Rockay City",
+        "url": "https://505.games/BzR8nhuf"
+    },
+    {
+        "name": "Credits",
+        "url": "credits.html"
     },
 	{
         "name": "Gamersupps 10% off",
@@ -34,5 +42,10 @@
     {
         "name": "Tip Jar",
         "url": "https://streamelements.com/kirsche/tip"
+    },
+    {
+        "name": "Crime Boss Rockay City",
+        "url": "https://505.games/BzR8nhuf"
     }
+
 ]
