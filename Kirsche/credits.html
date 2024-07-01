@@ -100,46 +100,60 @@
         }
 
         async function loadCredits() {
-            const response = await fetch('credits.json');
-            const credits = await response.json();
-            const creditsGrid = document.getElementById('credits-grid');
-            creditsGrid.innerHTML = '';
-            credits.forEach(credit => {
-                const creditCard = document.createElement('div');
-                creditCard.className = 'credit-card';
+            try {
+                const response = await fetch('credits.json');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const credits = await response.json();
+                const creditsGrid = document.getElementById('credits-grid');
+                creditsGrid.innerHTML = '';
+                credits.forEach(credit => {
+                    const creditCard = document.createElement('div');
+                    creditCard.className = 'credit-card';
 
-                const img = document.createElement('img');
-                img.src = credit.png_link;
-                img.alt = credit.name;
-                creditCard.appendChild(img);
+                    const img = document.createElement('img');
+                    img.src = credit.png_link;
+                    img.alt = credit.name;
+                    creditCard.appendChild(img);
 
-                const nameLink = document.createElement('a');
-                nameLink.href = credit.url;
-                nameLink.textContent = credit.name;
-                creditCard.appendChild(nameLink);
+                    const nameLink = document.createElement('a');
+                    nameLink.href = credit.url;
+                    nameLink.textContent = credit.name;
+                    creditCard.appendChild(nameLink);
 
-                const desc = document.createElement('p');
-                desc.textContent = credit.desc;
-                desc.style.fontStyle = 'italic';
-                creditCard.appendChild(desc);
+                    const desc = document.createElement('p');
+                    desc.textContent = credit.desc;
+                    desc.style.fontStyle = 'italic';
+                    creditCard.appendChild(desc);
 
-                creditsGrid.appendChild(creditCard);
-            });
+                    creditsGrid.appendChild(creditCard);
+                });
+            } catch (error) {
+                console.error('Error loading credits:', error);
+            }
         }
 
         async function loadMenu() {
-            const response = await fetch('menu.json');
-            const menuItems = await response.json();
-            const menuList = document.getElementById('menu-list');
-            menuList.innerHTML = '';
-            menuItems.forEach(item => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = item.url;
-                a.textContent = item.name;
-                li.appendChild(a);
-                menuList.appendChild(li);
-            });
+            try {
+                const response = await fetch('menu.json');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const menuItems = await response.json();
+                const menuList = document.getElementById('menu-list');
+                menuList.innerHTML = '';
+                menuItems.forEach(item => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = item.url;
+                    a.textContent = item.name;
+                    li.appendChild(a);
+                    menuList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error loading menu:', error);
+            }
         }
 
         window.onload = async function() {
