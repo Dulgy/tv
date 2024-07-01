@@ -38,22 +38,31 @@
         .credit-card {
             text-align: center;
         }
+        .credit-card a {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
         .credit-card img {
             border-radius: 10px;
             width: 100px;
             height: 100px;
             object-fit: cover;
-            cursor: pointer;
+            transition: transform 0.3s ease;
         }
-        .credit-card a {
+        .credit-card img:hover {
+            transform: scale(1.1);
+        }
+        .credit-card a img {
+            margin-bottom: 1rem;
+        }
+        .credit-card a span {
             display: block;
-            margin-top: 1rem;
             font-weight: bold;
-            text-decoration: none;
-            color: inherit;
         }
         .credit-card p {
             margin: 0.5rem 0;
+            font-style: italic;
         }
         .sidebar {
             position: fixed;
@@ -82,8 +91,8 @@
             text-decoration: none;
         }
         .menu-button {
-            background: none;
-            color: blue;
+            background-color: lightblue;
+            color: white;
             cursor: pointer;
             width: 50px;
             height: 50px;
@@ -91,23 +100,24 @@
             align-items: center;
             justify-content: center;
             border: none;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
         .menu-button img {
             width: 100%;
             height: 100%;
         }
         .menu-button:hover {
-            color: darkblue;
+            background-color: deepskyblue;
         }
         .menu-button-large {
-            width: 250px;
-            height: 100%;
-            background-color: #333;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
+            width: 100%;
+            height: 50px;
+            position: relative;
+            top: 10px;
+            left: 10px;
         }
     </style>
     <script>
@@ -128,27 +138,24 @@
                     const creditCard = document.createElement('div');
                     creditCard.className = 'credit-card';
 
-                    const imgLink = document.createElement('a');
-                    imgLink.href = credit.url;
-                    imgLink.target = '_blank';
+                    const link = document.createElement('a');
+                    link.href = credit.url;
 
                     const img = document.createElement('img');
                     img.src = credit.png_link;
                     img.alt = credit.name;
-                    imgLink.appendChild(img);
+                    link.appendChild(img);
 
-                    const nameLink = document.createElement('a');
-                    nameLink.href = credit.url;
-                    nameLink.textContent = credit.name;
-                    nameLink.target = '_blank';
+                    const name = document.createElement('span');
+                    name.textContent = credit.name;
+                    link.appendChild(name);
+
+                    creditCard.appendChild(link);
 
                     const desc = document.createElement('p');
                     desc.textContent = credit.desc;
-                    desc.style.fontStyle = 'italic';
-
-                    creditCard.appendChild(imgLink);
-                    creditCard.appendChild(nameLink);
                     creditCard.appendChild(desc);
+
                     creditsGrid.appendChild(creditCard);
                 });
             } catch (error) {
