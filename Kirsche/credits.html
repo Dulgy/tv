@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Credits</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            margin-top: 0;
+        }
+        main {
+            margin-top: 0;
+        }
+        .main-container {
+            padding-top: 0;
+            display: flex;
+            justify-content: space-between;
+            flex: 1;
+        }
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .credit-item {
+            text-align: center;
+        }
+        .credit-item img {
+            border-radius: 10%;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+    <script>
+        async function loadCredits() {
+            const response = await fetch('credits.json');
+            const credits = await response.json();
+            const creditsContainer = document.getElementById('credits-container');
+            creditsContainer.innerHTML = '';
+
+            credits.forEach(credit => {
+                const creditItem = document.createElement('div');
+                creditItem.className = 'credit-item';
+
+                const img = document.createElement('img');
+                img.src = credit.png_link;
+                img.alt = credit.name;
+                img.onclick = () => window.open(credit.url, '_blank');
+                
+                const name = document.createElement('div');
+                name.textContent = credit.name;
+                name.style.fontWeight = 'bold';
+
+                const desc = document.createElement('div');
+                desc.textContent = credit.desc;
+                desc.style.fontStyle = 'italic';
+
+                creditItem.appendChild(img);
+                creditItem.appendChild(name);
+                creditItem.appendChild(desc);
+
+                creditsContainer.appendChild(creditItem);
+            });
+        }
+
+        window.onload = function() {
+            loadCredits();
+        }
+    </script>
+</head>
+<body>
+    <main class="main-container">
+        <div class="credits-grid" id="credits-container"></div>
+    </main>
+    <div id="sidebar" class="sidebar">
+        <button class="menu-button" onclick="toggleSidebar()">
+            <img src="menu.png" alt="Menu">
+        </button>
+        <ul id="menu-list"></ul>
+    </div>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        async function loadMenu() {
+            const response = await fetch('menu.json');
+            const menuItems = await response.json();
+            const menuList = document.getElementById('menu-list');
+            menuList.innerHTML = '';
+            menuItems.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.textContent = item.name;
+                li.appendChild(a);
+                menuList.appendChild(li);
+            });
+        }
+
+        window.onload = async function() {
+            await loadMenu();
+        }
+    </script>
+</body>
+</html>
