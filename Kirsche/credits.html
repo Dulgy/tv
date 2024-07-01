@@ -32,7 +32,7 @@
         }
         .credits-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
         }
         .credit-card {
@@ -80,7 +80,7 @@
             text-decoration: none;
         }
         .menu-button {
-            background: 1px solid lightgrey;
+            background: lightgrey;
             color: white;
             cursor: pointer;
             width: 50px;
@@ -88,6 +88,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            border: none;
         }
         .menu-button img {
             width: 100%;
@@ -163,6 +164,9 @@
     </script>
 </head>
 <body>
+    <button class="menu-button" onclick="toggleSidebar()">
+        <img src="menu.png" alt="Menu">
+    </button>
     <main class="main-container">
         <div class="credits-container">
             <div id="credits-grid" class="credits-grid"></div>
