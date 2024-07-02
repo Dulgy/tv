@@ -172,7 +172,7 @@
             border: none;
         }
         #modButton {
-            position: fixed;
+            position: absolute;
             bottom: 20px;
             right: 20px;
             padding: 10px 20px;
@@ -255,54 +255,6 @@
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        window.onload = async function() {
-            await loadStream();
-            await loadChat();
-            switchTab('twitch-chat');
-            await loadMenu();
-        }
-    </script>
-</head>
-<body>
-    <main class="main-container">
-    <div class="stream-container">
-        <div class="stream-buttons">
-            <button class="menu-button" onclick="toggleSidebar()">
-                <img src="menu.png" alt="Menu">
-            </button>
-            <button class="youtube-btn" onclick="loadStream('youtube')">YouTube</button>
-            <button class="twitch-btn" onclick="loadStream('twitch')">Twitch</button>
-            <button class="rumble-btn" onclick="loadStream('rumble')">Rumble</button>
-        </div>
-        <iframe id="live-stream" src=""></iframe>
-    </div>
-    <div class="chat-container">
-        <div class="tabs">
-            <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="Twitch.png" alt="Twitch Chat"></button>
-            <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="YouTube.png" alt="YouTube Chat"></button>
-            <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="Rumble.png" alt="Rumble Chat"></button>
-        </div>
-        <div id="twitch-chat" class="tab-content active">
-            <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
-        </div>
-        <div id="youtube-chat" class="tab-content">
-            <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
-        </div>
-        <div id="rumble-chat" class="tab-content">
-            <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
-        </div>
-        <!-- Mod button added here -->
-        <button id="modButton">Toggle Stream Manager</button>
-    </div>
-</main>
-
-    <div id="sidebar" class="sidebar">
-        <button class="menu-button" onclick="toggleSidebar()">
-            <img src="menu.png" alt="Menu">
-        </button>
-        <ul id="menu-list"></ul>
-    </div>
-    <script>
         async function loadChat() {
             const config = await loadConfig();
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
@@ -326,5 +278,51 @@
 			modButton.addEventListener('click', toggleStreamManager);
         }
     </script>
+</head>
+<body>
+    <main class="main-container">
+        <div class="stream-container">
+            <div class="stream-buttons">
+                <button class="menu-button" onclick="toggleSidebar()">
+                    <img src="menu.png" alt="Menu">
+                </button>
+                <button class="youtube-btn" onclick="loadStream('youtube')">YouTube</button>
+                <button class="twitch-btn" onclick="loadStream('twitch')">Twitch</button>
+                <button class="rumble-btn" onclick="loadStream('rumble')">Rumble</button>
+            </div>
+            <iframe id="live-stream" src=""></iframe>
+        </div>
+        <div class="chat-container">
+            <div class="tabs">
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="Twitch.png" alt="Twitch Chat"></button>
+                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="YouTube.png" alt="YouTube Chat"></button>
+                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="Rumble.png" alt="Rumble Chat"></button>
+            </div>
+            <div id="twitch-chat" class="tab-content active">
+                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
+            </div>
+            <div id="youtube-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
+            </div>
+            <div id="rumble-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
+            </div>
+            <!-- Mod button added here -->
+            <button id="modButton">Toggle Stream Manager</button>
+        </div>
+    </main>
+
+    <div id="sidebar" class="sidebar">
+        <button class="menu-button" onclick="toggleSidebar()">
+            <img src="menu.png" alt="Menu">
+        </button>
+        <ul id="menu-list"></ul>
+    </div>
+
+    <!-- Placeholder for iframe container -->
+    <div id="iframeContainer">
+        <button onclick="toggleStreamManager()">Close</button>
+        <iframe id="iframe" src="moderation.html"></iframe>
+    </div>
 </body>
 </html>
