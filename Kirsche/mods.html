@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitch Stream Manager Toggle</title>
+    <style>
+        #iframeContainer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+        #iframe {
+            width: 90%;
+            height: 90%;
+            margin: 5%;
+            border: none;
+        }
+        #toggleButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #9147ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggleButton">Toggle Stream Manager</button>
+    <div id="iframeContainer">
+        <iframe id="iframe"></iframe>
+    </div>
+
+    <script>
+        const toggleButton = document.getElementById('toggleButton');
+        const iframeContainer = document.getElementById('iframeContainer');
+        const iframe = document.getElementById('iframe');
+
+        // Fetch twitch_id from config.json and set iframe src
+        fetch('config.json')
+            .then(response => response.json())
+            .then(config => {
+                const twitchId = config.twitch_id;
+                iframe.src = `https://dashboard.twitch.tv/u/${twitchId}/stream-manager`;
+            })
+            .catch(error => console.error('Error loading config:', error));
+
+        toggleButton.addEventListener('click', () => {
+            if (iframeContainer.style.display === 'none' || iframeContainer.style.display === '') {
+                iframeContainer.style.display = 'block';
+            } else {
+                iframeContainer.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
