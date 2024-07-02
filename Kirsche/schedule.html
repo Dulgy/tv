@@ -108,20 +108,24 @@
                 console.log('Config:', config);
 
                 const twitchChannel = config.twitch_channel;
-                const twitchClientId = config.twitch_clientID;
 
-                const scheduleResponse = await fetch(`https://api.twitch.tv/helix/schedule?broadcaster_id=${twitchChannel}`, {
-                    headers: {
-                        'Client-ID': twitchClientId
-                    }
-                });
-                const scheduleData = await scheduleResponse.json();
-                console.log('Schedule Data:', scheduleData);
-
-                if (scheduleData.data && scheduleData.data.segments) {
-                    displaySchedule(scheduleData.data.segments);
+                // Fetch the Twitch schedule page
+                const schedulePageResponse = await fetch(`https://www.twitch.tv/${twitchChannel}/schedule`);
+                const schedulePageText = await schedulePageResponse.text();
+                
+                // Parse the HTML to extract schedule information
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(schedulePageText, 'text/html');
+                const scheduleDataScript = [...doc.querySelectorAll('script')].find(script => script.textContent.includes('window.__INITIAL_STATE__'));
+                
+                if (scheduleDataScript) {
+                    const scheduleDataText = scheduleDataScript.textContent;
+                    const scheduleDataJson = JSON.parse(scheduleDataText.match(/window\.__INITIAL_STATE__\s*=\s*(\{.*\});/)[1]);
+                    const schedule = scheduleDataJson.schedule.events;
+                    console.log('Schedule Data:', schedule);
+                    displaySchedule(schedule);
                 } else {
-                    console.error('No schedule data found');
+                    console.error('No schedule data script found');
                 }
             } catch (error) {
                 console.error('Error loading schedule:', error);
@@ -131,11 +135,11 @@
         function displaySchedule(schedule) {
             const scheduleContainer = document.getElementById('schedule-container');
             scheduleContainer.innerHTML = '';
-            schedule.forEach(segment => {
-                const day = new Date(segment.start_time).toLocaleDateString('en-US', { weekday: 'long' });
-                const time = new Date(segment.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                const title = segment.title;
-                const description = segment.category.name;
+            schedule.forEach(event => {
+                const day = new Date(event.start_time).toLocaleDateString('en-US', { weekday: 'long' });
+                const time = new Date(event.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                const title = event.title;
+                const description = event.category.name;
                 const scheduleDay = document.createElement('div');
                 scheduleDay.className = 'schedule-day';
                 scheduleDay.innerHTML = `<h3>${day}</h3><p><strong>${title}</strong></p><p>${time}</p><p>${description}</p>`;
