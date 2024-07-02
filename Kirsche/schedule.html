@@ -3,126 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Live Stream</title>
+    <title>Menu and Sidebar</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <style>
-        html, body {
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-        nav {
-            margin-top: 0;
-        }
-        main {
-            margin-top: 0;
-        }
-        .main-container {
-            padding-top: 0;
-            display: flex;
-            justify-content: space-between;
-            flex: 1;
-        }
-        .stream-container {
-            flex: 3;
-            display: flex-start;
-            flex-direction: column;
-            margin-top: 0;
-            padding-top: 0;
-        }
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            margin-top: 0;
-            padding-top: 0;
-        }
-        .stream-buttons {
-            margin-top: 0;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            margin-bottom: 0;
         }
         .menu-button {
-            background: 1px solid lightgrey;
+            background-color: lightgrey;
             color: white;
             cursor: pointer;
             width: 50px;
             height: 50px;
-            margin-top: 0;
-            margin-right: 0.5rem;
-            margin-bottom: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: fixed;
+            top: 10px;
+            left: 10px;
         }
         .menu-button img {
             width: 100%;
             height: 100%;
-        }
-        .stream-buttons .youtube-btn,
-        .stream-buttons .twitch-btn,
-        .stream-buttons .rumble-btn {
-            flex: 1;
-            padding: 0.5rem;
-            margin: 0 0.25rem;
-            color: white;
-        }
-        .stream-buttons .youtube-btn {
-            background-color: red;
-        }
-        .stream-buttons .twitch-btn {
-            background-color: #9146FF;
-        }
-        .stream-buttons .rumble-btn {
-            background-color: lightgreen;
-        }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 0.5rem;
-        }
-        .tabs button {
-            padding: 0.5rem;
-            margin: 0 0.25rem;
-            color: white;
-        }
-        .tabs .youtube-btn {
-            background-color: red;
-        }
-        .tabs .twitch-btn {
-            background-color: #9146FF;
-        }
-        .tabs .rumble-btn {
-            background-color: lightgreen;
-        }
-        .tabs img {
-            height: 20px;
-            width: 20px;
-        }
-        .tab-content {
-            display: none;
-            height: 100%;
-        }
-        .tab-content.active {
-            display: block;
-            height: 100%;
-        }
-        iframe {
-            width: 100%;
-            height: calc(100vh - 4rem);
-            border: none;
-        }
-        .chat-iframe {
-            width: 100%;
-            height: calc(100vh - 4rem);
-            border: none;
         }
         .sidebar {
             position: fixed;
@@ -156,72 +59,19 @@
             left: 10px;
         }
         .schedule-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background: url('schedule.png') no-repeat center center;
-            background-size: cover;
-            padding: 20px;
+            padding: 1rem;
         }
-        .schedule-event {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
+        .schedule-day {
+            background-color: white;
+            border: 1px solid black;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .schedule-day h3 {
+            margin: 0 0 0.5rem 0;
         }
     </style>
     <script>
-        async function loadConfig() {
-            const response = await fetch('config.json');
-            const config = await response.json();
-
-            const apiKey = config.youtube_api_key; // Add your API key in config.json
-            const channelId = config.youtube_channel_id;
-
-            const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
-            const videoResponse = await fetch(apiUrl);
-            const videoData = await videoResponse.json();
-
-            if (videoData.items.length > 0) {
-                config.youtube_live_video_id = videoData.items[0].id.videoId;
-            }
-
-            return config;
-        }
-
-        async function loadStream(service) {
-            const config = await loadConfig();
-            const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
-            const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
-            const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
-
-            const iframe = document.getElementById('live-stream');
-
-            if (service === 'youtube') {
-                iframe.src = youtubeEmbed;
-            } else if (service === 'twitch') {
-                iframe.src = twitchEmbed;
-            } else if (service === 'rumble') {
-                iframe.src = rumbleEmbed;
-            } else {
-                iframe.src = youtubeEmbed;
-
-                iframe.onerror = function() {
-                    iframe.src = twitchEmbed;
-                    iframe.onerror = function() {
-                        iframe.src = rumbleEmbed;
-                    };
-                };
-            }
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-        }
-
         async function loadMenu() {
             const response = await fetch('menu.json');
             const menuItems = await response.json();
@@ -241,93 +91,57 @@
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        function getNextSevenDays() {
-            const days = [];
-            for (let i = 0; i < 7; i++) {
-                const date = new Date();
-                date.setDate(date.getDate() + i);
-                days.push(date.toLocaleDateString());
-            }
-            return days;
-        }
-
         async function loadSchedule() {
-            const config = await loadConfig();
+            const response = await fetch('config.json');
+            const config = await response.json();
             const twitchChannel = config.twitch_channel;
-            const apiUrl = `https://api.twitch.tv/helix/schedule?broadcaster_id=${twitchChannel}`;
-            const response = await fetch(apiUrl, {
+            const twitchToken = config.twitch_token;
+
+            const scheduleResponse = await fetch(`https://api.twitch.tv/helix/schedule?broadcaster_id=${twitchChannel}`, {
                 headers: {
-                    'Client-ID': config.twitch_client_id,
-                    'Authorization': `Bearer ${config.twitch_access_token}`
+                    'Client-ID': 'your-twitch-client-id',
+                    'Authorization': `Bearer ${twitchToken}`
                 }
             });
-            const scheduleData = await response.json();
+            const scheduleData = await scheduleResponse.json();
+            displaySchedule(scheduleData.data);
+        }
+
+        function displaySchedule(schedule) {
             const scheduleContainer = document.getElementById('schedule-container');
             scheduleContainer.innerHTML = '';
-
-            const days = getNextSevenDays();
-
-            days.forEach((day, index) => {
-                const events = scheduleData.data.segments.filter(segment => new Date(segment.start_time).toLocaleDateString() === day);
-                if (events.length > 0) {
-                    events.forEach(event => {
-                        const eventElement = document.createElement('div');
-                        eventElement.className = 'schedule-event';
-                        eventElement.textContent = `${new Date(event.start_time).toLocaleTimeString()} - ${event.title}`;
-                        scheduleContainer.appendChild(eventElement);
-                    });
-                } else {
-                    const noEventElement = document.createElement('div');
-                    noEventElement.className = 'schedule-event';
-                    noEventElement.textContent = `No events on ${day}`;
-                    scheduleContainer.appendChild(noEventElement);
-                }
+            schedule.segments.forEach(segment => {
+                const day = new Date(segment.start_time).toLocaleDateString('en-US', { weekday: 'long' });
+                const time = new Date(segment.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                const title = segment.title;
+                const description = segment.category.name;
+                const scheduleDay = document.createElement('div');
+                scheduleDay.className = 'schedule-day';
+                scheduleDay.innerHTML = `<h3>${day}</h3><p><strong>${title}</strong></p><p>${time}</p><p>${description}</p>`;
+                scheduleContainer.appendChild(scheduleDay);
             });
         }
 
         window.onload = async function() {
-            await loadStream();
-            await loadChat();
-            switchTab('twitch-chat');
             await loadMenu();
             await loadSchedule();
         }
     </script>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <div class="menu-button" onclick="toggleSidebar()">
-            <img src="menu-icon.png" alt="Menu">
-        </div>
+    <button class="menu-button" onclick="toggleSidebar()">
+        <img src="menu.png" alt="Menu">
+    </button>
+    <div id="sidebar" class="sidebar">
+        <button class="menu-button" onclick="toggleSidebar()">
+            <img src="menu.png" alt="Menu">
+        </button>
         <ul id="menu-list"></ul>
     </div>
-
-    <div class="main-container">
-        <div class="stream-container">
-            <nav class="container-fluid">
-                <ul>
-                    <li><strong>Stream Platform</strong></li>
-                </ul>
-                <ul>
-                    <li><a href="#" class="youtube-btn" onclick="loadStream('youtube')">YouTube</a></li>
-                    <li><a href="#" class="twitch-btn" onclick="loadStream('twitch')">Twitch</a></li>
-                    <li><a href="#" class="rumble-btn" onclick="loadStream('rumble')">Rumble</a></li>
-                </ul>
-            </nav>
-            <iframe id="live-stream" class="tab-content active" src=""></iframe>
-            <div class="schedule-container" id="schedule-container"></div>
+    <main class="container">
+        <div class="schedule-container" id="schedule-container">
+            <!-- Schedule will be dynamically populated here -->
         </div>
-
-        <div class="chat-container">
-            <div class="tabs">
-                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="youtube-logo.png" alt="YouTube"> YouTube</button>
-                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="twitch-logo.png" alt="Twitch"> Twitch</button>
-                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="rumble-logo.png" alt="Rumble"> Rumble</button>
-            </div>
-            <iframe id="youtube-chat" class="chat-iframe tab-content" src="https://www.youtube.com/live_chat?v=YOUR_VIDEO_ID&embed_domain=YOUR_DOMAIN"></iframe>
-            <iframe id="twitch-chat" class="chat-iframe tab-content active" src="https://www.twitch.tv/embed/YOUR_CHANNEL_NAME/chat"></iframe>
-            <iframe id="rumble-chat" class="chat-iframe tab-content" src="https://rumble.com/embed/live/YOUR_LIVE_ID/chat?autoplay=2"></iframe>
-        </div>
-    </div>
+    </main>
 </body>
 </html>
