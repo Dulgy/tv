@@ -102,18 +102,30 @@
         }
 
         async function loadSchedule() {
-            const response = await fetch('config.json');
-            const config = await response.json();
-            const twitchChannel = config.twitch_channel;
-            const twitchClientId = config.twitch_clientID;
+            try {
+                const response = await fetch('config.json');
+                const config = await response.json();
+                console.log('Config:', config);
 
-            const scheduleResponse = await fetch(`https://api.twitch.tv/helix/schedule?broadcaster_id=${twitchChannel}`, {
-                headers: {
-                    'Client-ID': twitchClientId
+                const twitchChannel = config.twitch_channel;
+                const twitchClientId = config.twitch_clientID;
+
+                const scheduleResponse = await fetch(`https://api.twitch.tv/helix/schedule?broadcaster_id=${twitchChannel}`, {
+                    headers: {
+                        'Client-ID': twitchClientId
+                    }
+                });
+                const scheduleData = await scheduleResponse.json();
+                console.log('Schedule Data:', scheduleData);
+
+                if (scheduleData.data && scheduleData.data.segments) {
+                    displaySchedule(scheduleData.data.segments);
+                } else {
+                    console.error('No schedule data found');
                 }
-            });
-            const scheduleData = await scheduleResponse.json();
-            displaySchedule(scheduleData.data.segments);
+            } catch (error) {
+                console.error('Error loading schedule:', error);
+            }
         }
 
         function displaySchedule(schedule) {
