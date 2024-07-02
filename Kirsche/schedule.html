@@ -294,3 +294,40 @@
         }
     </script>
 </head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="menu-button" onclick="toggleSidebar()">
+            <img src="menu-icon.png" alt="Menu">
+        </div>
+        <ul id="menu-list"></ul>
+    </div>
+
+    <div class="main-container">
+        <div class="stream-container">
+            <nav class="container-fluid">
+                <ul>
+                    <li><strong>Stream Platform</strong></li>
+                </ul>
+                <ul>
+                    <li><a href="#" class="youtube-btn" onclick="loadStream('youtube')">YouTube</a></li>
+                    <li><a href="#" class="twitch-btn" onclick="loadStream('twitch')">Twitch</a></li>
+                    <li><a href="#" class="rumble-btn" onclick="loadStream('rumble')">Rumble</a></li>
+                </ul>
+            </nav>
+            <iframe id="live-stream" class="tab-content active" src=""></iframe>
+            <div class="schedule-container" id="schedule-container"></div>
+        </div>
+
+        <div class="chat-container">
+            <div class="tabs">
+                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="youtube-logo.png" alt="YouTube"> YouTube</button>
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="twitch-logo.png" alt="Twitch"> Twitch</button>
+                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="rumble-logo.png" alt="Rumble"> Rumble</button>
+            </div>
+            <iframe id="youtube-chat" class="chat-iframe tab-content" src="https://www.youtube.com/live_chat?v=YOUR_VIDEO_ID&embed_domain=YOUR_DOMAIN"></iframe>
+            <iframe id="twitch-chat" class="chat-iframe tab-content active" src="https://www.twitch.tv/embed/YOUR_CHANNEL_NAME/chat"></iframe>
+            <iframe id="rumble-chat" class="chat-iframe tab-content" src="https://rumble.com/embed/live/YOUR_LIVE_ID/chat?autoplay=2"></iframe>
+        </div>
+    </div>
+</body>
+</html>
