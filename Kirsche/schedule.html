@@ -11,8 +11,6 @@
             padding: 0;
         }
         .menu-button {
-            background-color: lightgrey;
-            color: white;
             cursor: pointer;
             width: 50px;
             height: 50px;
@@ -95,26 +93,25 @@
             const response = await fetch('config.json');
             const config = await response.json();
             const twitchChannel = config.twitch_channel;
-            const twitchToken = config.twitch_token;
+            const twitchClientId = config.twitch_clientID; // Read Twitch Client ID from config
 
             const scheduleResponse = await fetch(`https://api.twitch.tv/helix/schedule?broadcaster_id=${twitchChannel}`, {
                 headers: {
-                    'Client-ID': 'your-twitch-client-id',
-                    'Authorization': `Bearer ${twitchToken}`
+                    'Client-ID': twitchClientId
                 }
             });
             const scheduleData = await scheduleResponse.json();
-            displaySchedule(scheduleData.data);
+            displaySchedule(scheduleData.data.segments); // Access segments array from response
         }
 
         function displaySchedule(schedule) {
             const scheduleContainer = document.getElementById('schedule-container');
             scheduleContainer.innerHTML = '';
-            schedule.segments.forEach(segment => {
+            schedule.forEach(segment => {
                 const day = new Date(segment.start_time).toLocaleDateString('en-US', { weekday: 'long' });
                 const time = new Date(segment.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 const title = segment.title;
-                const description = segment.category.name;
+                const description = segment.category_name;
                 const scheduleDay = document.createElement('div');
                 scheduleDay.className = 'schedule-day';
                 scheduleDay.innerHTML = `<h3>${day}</h3><p><strong>${title}</strong></p><p>${time}</p><p>${description}</p>`;
