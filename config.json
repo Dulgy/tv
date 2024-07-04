@@ -1,7 +1,9 @@
 {
-    "youtube_channel_id": "UCmk-2MI1zxYkiFz7w012ZCg",
-    "youtube_api_key": "AIzaSyDWA5ktLdT1wfRBjXZ0xTvYih2BbMXmmlQ",
-    "twitch_channel": "Indulgence82",
-    "rumble_live_id": "Indulgence82",
-    "rumble_chat_id": "Indulgence82"
+    "youtube_channel_id": "UC3N8ceQAY0F_kJG0aJNttLg",
+	"youtube_api_key": "AIzaSyDWA5ktLdT1wfRBjXZ0xTvYih2BbMXmmlQ",
+    "twitch_channel": "Kirsche",
+	"twitch_clientID": "66yuv2abae33nldixyuwykp9dn4b22",
+    "rumble_live_id": "YOUR_RUMBLE_LIVE_ID",
+    "rumble_chat_id": "YOUR_RUMBLE_CHAT_ID",
+	"x_channel": "@KirscheVerstahl"
 }
