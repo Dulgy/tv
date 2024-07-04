@@ -235,7 +235,7 @@
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
             document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
-            document.getElementById('x-chat-iframe').src = `https://x.com/${config.x_channel}`;
+            document.getElementById('x-chat-iframe').src = `https://twitframe.com/show?url=https://x.com/${config.x_channel}`;
         }
 
         window.onload = async function() {
