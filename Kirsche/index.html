@@ -28,23 +28,23 @@
             flex: 1;
         }
         .stream-container {
-            flex: 3;
+            flex: 3.15; /* Increased by 5% */
             display: flex-start;
             flex-direction: column;
-			margin-top: 0;
-			padding-top: 0;
+            margin-top: 0;
+            padding-top: 0;
         }
         .chat-container {
-            flex: 1;
+            flex: 0.85; /* Decreased by 5% */
             display: flex;
             flex-direction: column;
             height: 100%;
-			margin-top: 0;
-			padding-top: 0;
+            margin-top: 0;
+            padding-top: 0;
         }
         .stream-buttons {
             margin-top: 0;
-			display: flex;
+            display: flex;
             align-items: flex-start;
             justify-content: center;
             margin-bottom: 0;
@@ -52,12 +52,12 @@
         .menu-button {
             background: 1px solid lightgrey;
             color: white;
-			cursor: pointer;
+            cursor: pointer;
             width: 50px;
             height: 50px;
             margin-top: 0;
-			margin-right: 0.5rem;
-			margin-bottom: 0;
+            margin-right: 0.5rem;
+            margin-bottom: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -158,49 +158,49 @@
     </style>
     <script>
         async function loadConfig() {
-			const response = await fetch('config.json');
-			const config = await response.json();
+            const response = await fetch('config.json');
+            const config = await response.json();
 
-			const apiKey = config.youtube_api_key; // Add your API key in config.json
-			const channelId = config.youtube_channel_id;
+            const apiKey = config.youtube_api_key; // Add your API key in config.json
+            const channelId = config.youtube_channel_id;
 
-			const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
-			const videoResponse = await fetch(apiUrl);
-			const videoData = await videoResponse.json();
+            const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
+            const videoResponse = await fetch(apiUrl);
+            const videoData = await videoResponse.json();
 
-			if (videoData.items.length > 0) {
-				config.youtube_live_video_id = videoData.items[0].id.videoId;
-			}
+            if (videoData.items.length > 0) {
+                config.youtube_live_video_id = videoData.items[0].id.videoId;
+            }
 
-			return config;
-		}
+            return config;
+        }
 
 
         async function loadStream(service) {
-			const config = await loadConfig();
-			const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
-			const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
-			const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
+            const config = await loadConfig();
+            const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
+            const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
+            const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
 
-			const iframe = document.getElementById('live-stream');
+            const iframe = document.getElementById('live-stream');
 
-			if (service === 'youtube') {
-				iframe.src = youtubeEmbed;
-			} else if (service === 'twitch') {
-				iframe.src = twitchEmbed;
-			} else if (service === 'rumble') {
-				iframe.src = rumbleEmbed;
-			} else {
-				iframe.src = youtubeEmbed;
+            if (service === 'youtube') {
+                iframe.src = youtubeEmbed;
+            } else if (service === 'twitch') {
+                iframe.src = twitchEmbed;
+            } else if (service === 'rumble') {
+                iframe.src = rumbleEmbed;
+            } else {
+                iframe.src = youtubeEmbed;
 
-				iframe.onerror = function() {
-					iframe.src = twitchEmbed;
-					iframe.onerror = function() {
-						iframe.src = rumbleEmbed;
-            };
-        };
-    }
-}
+                iframe.onerror = function() {
+                    iframe.src = twitchEmbed;
+                    iframe.onerror = function() {
+                        iframe.src = rumbleEmbed;
+                    };
+                };
+            }
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
