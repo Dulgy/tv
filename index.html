@@ -160,7 +160,7 @@
         }
         .twitter-iframe {
             width: 100%;
-            height: 100%;
+            height: 20%;
             border: none;
         }
     </style>
@@ -235,15 +235,24 @@
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        async function loadTwitterFeed() {
+        async function loadChat() {
             const config = await loadConfig();
+            document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
+            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
+            document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
+        }
+
+        async function loadTwitterFeed() {
+            const response = await fetch('tweets.json');
+            const tweetData = await response.json();
             const twitterIframeContainer = document.getElementById('twitter-iframe-container');
             twitterIframeContainer.innerHTML = ''; // Clear previous iframes if any
-            const twitterProfileUrl = `https://twitter.com/${config.x_channel}`;
-            const iframe = document.createElement('iframe');
-            iframe.className = 'twitter-iframe';
-            iframe.src = `https://twitframe.com/show?url=${twitterProfileUrl}`;
-            twitterIframeContainer.appendChild(iframe);
+            tweetData.tweets.forEach(tweetId => {
+                const iframe = document.createElement('iframe');
+                iframe.className = 'twitter-iframe';
+                iframe.src = `https://twitframe.com/show?url=https://twitter.com/anyuser/status/${tweetId}`;
+                twitterIframeContainer.appendChild(iframe);
+            });
         }
 
         window.onload = async function() {
