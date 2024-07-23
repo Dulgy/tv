@@ -243,14 +243,19 @@
         }
 
         async function loadTwitterFeed() {
-            const response = await fetch('tweets.json');
-            const tweetData = await response.json();
+            const config = await loadConfig();
             const twitterIframeContainer = document.getElementById('twitter-iframe-container');
             twitterIframeContainer.innerHTML = ''; // Clear previous iframes if any
-            tweetData.tweets.forEach(tweetId => {
+
+            const twitterApiUrl = `https://api.tweetpik.com/latest/${config.x_channel}?limit=5`;
+
+            const tweetResponse = await fetch(twitterApiUrl);
+            const tweets = await tweetResponse.json();
+
+            tweets.forEach(tweet => {
                 const iframe = document.createElement('iframe');
                 iframe.className = 'twitter-iframe';
-                iframe.src = `https://twitframe.com/show?url=https://twitter.com/anyuser/status/${tweetId}`;
+                iframe.src = `https://twitframe.com/show?url=https://twitter.com/${config.x_channel}/status/${tweet.id}`;
                 twitterIframeContainer.appendChild(iframe);
             });
         }
