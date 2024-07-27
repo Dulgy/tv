@@ -158,13 +158,56 @@
             top: 10px;
             left: 10px;
         }
-        .twitter-tweet {
-            width: 100%;
-            height: 100px;
-            border: none;
-            margin-bottom: 10px;
+        .sk-ww-twitter-feed {
+            width: 375px;
+            height: 667px;
+            border: 1px solid #ccc;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
     </style>
+</head>
+<body>
+    <main class="main-container">
+        <div class="stream-container">
+            <div class="stream-buttons">
+                <button class="menu-button" onclick="toggleSidebar()">
+                    <img src="menu.png" alt="Menu">
+                </button>
+                <button class="youtube-btn" onclick="loadStream('youtube')">YouTube</button>
+                <button class="twitch-btn" onclick="loadStream('twitch')">Twitch</button>
+                <button class="rumble-btn" onclick="loadStream('rumble')">Rumble</button>
+            </div>
+            <iframe id="live-stream" src=""></iframe>
+        </div>
+        <div class="chat-container">
+            <div class="tabs">
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="Twitch.png" alt="Twitch Chat"></button>
+                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="YouTube.png" alt="YouTube Chat"></button>
+                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="Rumble.png" alt="Rumble Chat"></button>
+                <button class="x-btn" onclick="switchTab('twitter-chat')">X</button>
+            </div>
+            <div id="twitch-chat" class="tab-content active">
+                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
+            </div>
+            <div id="youtube-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
+            </div>
+            <div id="rumble-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
+            </div>
+            <div id="twitter-chat" class="tab-content">
+                <div class='sk-ww-twitter-feed' data-embed-id='25442433'></div>
+                <script src='https://widgets.sociablekit.com/twitter-feed/widget.js' async defer></script>
+            </div>
+        </div>
+    </main>
+    <div id="sidebar" class="sidebar">
+        <button class="menu-button" onclick="toggleSidebar()">
+            <img src="menu.png" alt="Menu">
+        </button>
+        <ul id="menu-list"></ul>
+    </div>
     <script>
         async function loadConfig() {
             const response = await fetch('config.json');
@@ -243,73 +286,12 @@
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
         }
 
-        async function loadTwitterFeed() {
-            const config = await loadConfig();
-            const twitterIframeContainer = document.getElementById('twitter-iframe-container');
-            twitterIframeContainer.innerHTML = ''; // Clear previous iframes if any
-
-            const rssFeedUrl = `https://twitrss.me/twitter_user_to_rss/?user=${config.x_channel}`;
-            const rss2jsonUrl = `https://api.rss2json.com/v1/api.json?rss_url=${rssFeedUrl}`;
-
-            const tweetResponse = await fetch(rss2jsonUrl);
-            const tweetData = await tweetResponse.json();
-
-            tweetData.items.slice(0, 5).forEach(tweet => {
-                const iframe = document.createElement('iframe');
-                iframe.className = 'twitter-tweet';
-                iframe.src = `https://twitframe.com/show?url=${tweet.link}`;
-                twitterIframeContainer.appendChild(iframe);
-            });
-        }
-
         window.onload = async function() {
             await loadStream();
             await loadChat();
             switchTab('twitch-chat');
             await loadMenu();
-            await loadTwitterFeed();
         }
     </script>
-</head>
-<body>
-    <main class="main-container">
-        <div class="stream-container">
-            <div class="stream-buttons">
-                <button class="menu-button" onclick="toggleSidebar()">
-                    <img src="menu.png" alt="Menu">
-                </button>
-                <button class="youtube-btn" onclick="loadStream('youtube')">YouTube</button>
-                <button class="twitch-btn" onclick="loadStream('twitch')">Twitch</button>
-                <button class="rumble-btn" onclick="loadStream('rumble')">Rumble</button>
-            </div>
-            <iframe id="live-stream" src=""></iframe>
-        </div>
-        <div class="chat-container">
-            <div class="tabs">
-                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="Twitch.png" alt="Twitch Chat"></button>
-                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="YouTube.png" alt="YouTube Chat"></button>
-                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="Rumble.png" alt="Rumble Chat"></button>
-                <button class="x-btn" onclick="switchTab('twitter-chat')">X</button>
-            </div>
-            <div id="twitch-chat" class="tab-content active">
-                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
-            </div>
-            <div id="youtube-chat" class="tab-content">
-                <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
-            </div>
-            <div id="rumble-chat" class="tab-content">
-                <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
-            </div>
-            <div id="twitter-chat" class="tab-content">
-                <div id="twitter-iframe-container"></div>
-            </div>
-        </div>
-    </main>
-    <div id="sidebar" class="sidebar">
-        <button class="menu-button" onclick="toggleSidebar()">
-            <img src="menu.png" alt="Menu">
-        </button>
-        <ul id="menu-list"></ul>
-    </div>
 </body>
 </html>
