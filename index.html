@@ -247,7 +247,7 @@
             const twitterIframeContainer = document.getElementById('twitter-iframe-container');
             twitterIframeContainer.innerHTML = ''; // Clear previous iframes if any
 
-            const twitterUrl = `https://twitter.com/intent/tweet?button_hashtag=${config.x_channel}&ref_src=twsrc%5Etfw`;
+            const twitterUrl = `https://twitter.com/${config.x_channel}?ref_src=twsrc%5Etfw`;
             const iframe = document.createElement('iframe');
             iframe.className = 'twitter-iframe';
             iframe.src = twitterUrl;
@@ -293,7 +293,7 @@
                 <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
             </div>
             <div id="twitter-chat" class="tab-content">
-                <div id="twitter-iframe-container"></div>
+                <div id="twitter-iframe-container" style="height: 100%;"></div>
             </div>
         </div>
     </main>
