@@ -158,7 +158,7 @@
             top: 10px;
             left: 10px;
         }
-        .twitter-iframe {
+        .twitter-timeline {
             width: 100%;
             height: 100%;
             border: none;
@@ -247,11 +247,19 @@
             const twitterIframeContainer = document.getElementById('twitter-iframe-container');
             twitterIframeContainer.innerHTML = ''; // Clear previous iframes if any
 
-            const twitterUrl = `https://twitter.com/${config.x_channel}?ref_src=twsrc%5Etfw`;
-            const iframe = document.createElement('iframe');
-            iframe.className = 'twitter-iframe';
-            iframe.src = twitterUrl;
-            twitterIframeContainer.appendChild(iframe);
+            const twitterTimeline = document.createElement('a');
+            twitterTimeline.setAttribute('class', 'twitter-timeline');
+            twitterTimeline.setAttribute('data-width', '100%');
+            twitterTimeline.setAttribute('data-height', '100%');
+            twitterTimeline.setAttribute('href', `https://twitter.com/${config.x_channel}?ref_src=twsrc%5Etfw`);
+            twitterIframeContainer.appendChild(twitterTimeline);
+
+            // Load the Twitter widgets script
+            const script = document.createElement('script');
+            script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
+            script.setAttribute('async', '');
+            script.setAttribute('charset', 'utf-8');
+            document.body.appendChild(script);
         }
 
         window.onload = async function() {
