@@ -158,12 +158,47 @@
             top: 10px;
             left: 10px;
         }
-        .sk-ww-twitter-feed {
-            width: 375px;
-            height: 667px;
-            border: 1px solid #ccc;
+        /* Mobile phone frame styling */
+        .mobile-frame {
+            width: 375px; /* iPhone 8 width */
+            height: 667px; /* iPhone 8 height */
+            border: 16px black solid;
+            border-top-width: 60px;
+            border-bottom-width: 60px;
+            border-radius: 36px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
             margin: 0 auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        .mobile-frame::before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: -48px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 5px;
+            background: black;
+            border-radius: 10px;
+        }
+        .mobile-frame::after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: -48px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35%;
+            height: 40px;
+            background: #ccc;
+            border-radius: 20px;
+        }
+        .mobile-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
@@ -197,7 +232,9 @@
                 <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
             </div>
             <div id="twitter-chat" class="tab-content">
-                <div class='sk-ww-twitter-feed' data-embed-id='25442433'></div>
+                <div class="mobile-frame">
+                    <div class='sk-ww-twitter-feed' data-embed-id='25442433'></div>
+                </div>
                 <script src='https://widgets.sociablekit.com/twitter-feed/widget.js' async defer></script>
             </div>
         </div>
