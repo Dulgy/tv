@@ -158,7 +158,7 @@
             top: 10px;
             left: 10px;
         }
-        .twitter-timeline {
+        .twitter-iframe {
             width: 100%;
             height: 100%;
             border: none;
@@ -247,19 +247,11 @@
             const twitterIframeContainer = document.getElementById('twitter-iframe-container');
             twitterIframeContainer.innerHTML = ''; // Clear previous iframes if any
 
-            const twitterTimeline = document.createElement('a');
-            twitterTimeline.setAttribute('class', 'twitter-timeline');
-            twitterTimeline.setAttribute('data-width', '100%');
-            twitterTimeline.setAttribute('data-height', '100%');
-            twitterTimeline.setAttribute('href', `https://twitter.com/${config.x_channel}?ref_src=twsrc%5Etfw`);
-            twitterIframeContainer.appendChild(twitterTimeline);
-
-            // Load the Twitter widgets script
-            const script = document.createElement('script');
-            script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
-            script.setAttribute('async', '');
-            script.setAttribute('charset', 'utf-8');
-            document.body.appendChild(script);
+            const twitterUrl = `https://twitter.com/intent/tweet?button_hashtag=${config.x_channel}&ref_src=twsrc%5Etfw`;
+            const iframe = document.createElement('iframe');
+            iframe.className = 'twitter-iframe';
+            iframe.src = twitterUrl;
+            twitterIframeContainer.appendChild(iframe);
         }
 
         window.onload = async function() {
@@ -301,7 +293,7 @@
                 <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
             </div>
             <div id="twitter-chat" class="tab-content">
-                <div id="twitter-iframe-container" style="height: 100%;"></div>
+                <div id="twitter-iframe-container"></div>
             </div>
         </div>
     </main>
@@ -311,6 +303,5 @@
         </button>
         <ul id="menu-list"></ul>
     </div>
-	<a href="https://twitter.com/intent/tweet?button_hashtag=indulgence82&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false">Tweet #indulgence82</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
