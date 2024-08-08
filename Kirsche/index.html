@@ -250,6 +250,8 @@
 			// Ensure tweetIds is an array
 			if (!Array.isArray(tweetIds)) {
 				tweetIds = [tweetIds];
+			}  else {
+				tweetIds.reverse();
 			}
 
 			const twitterIframeContainer = document.getElementById('twitter-iframe-container');
@@ -260,7 +262,7 @@
 				iframe.className = 'twitter-iframe';
 				iframe.src = `https://twitter.com/i/status/${tweet.Tweet_ID}`;
 				twitterIframeContainer.appendChild(iframe);
-				});
+			});
 		}
 
         window.onload = async function() {
