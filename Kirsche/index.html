@@ -260,7 +260,10 @@
 			tweetIds.forEach(tweet => {
 				const iframe = document.createElement('iframe');
 				iframe.className = 'twitter-iframe';
-				iframe.src = `https://twitter.com/i/status/${tweet.Tweet_ID}`;
+				iframe.src = `https://twitframe.com/show?url=https://twitter.com/i/status/${tweet.Tweet_ID}`;
+				iframe.style.width = "100%";
+				iframe.style.height = "auto";
+				iframe.frameBorder = "0";
 				twitterIframeContainer.appendChild(iframe);
 			});
 		}
