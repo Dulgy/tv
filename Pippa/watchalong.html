@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Watchparty and Shorts</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .left-frame {
+            flex: 8; /* 80% of the screen */
+            height: 100%;
+            position: relative;
+        }
+        .right-frame {
+            flex: 2; /* 20% of the screen */
+            height: 100%;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="left-frame">
+            <iframe id="watchparty-frame" src="https://www.watchparty.me/watch/bloody-dad-repair" allowfullscreen></iframe>
+        </div>
+        <div class="right-frame">
+            <iframe id="shorts-frame" allowfullscreen></iframe>
+        </div>
+    </main>
+
+    <script>
+        async function loadConfig() {
+            const response = await fetch('config.json');
+            const config = await response.json();
+            return config;
+        }
+
+        async function loadShorts() {
+            const config = await loadConfig();
+            const shortsUrl = `https://www.youtube.com/embed?listType=user_uploads&list=${config.youtube_channel_id}&shorts=1`;
+            document.getElementById('shorts-frame').src = shortsUrl;
+        }
+
+        window.onload = loadShorts;
+
+        // Add this function to apply scale transform to the iframe content.
+        document.getElementById('watchparty-frame').onload = function () {
+            const iframeDocument = document.getElementById('watchparty-frame').contentWindow.document;
+            const iframeBody = iframeDocument.body || iframeDocument.documentElement;
+
+            iframeBody.style.transform = "scale(0.7)";
+            iframeBody.style.transformOrigin = "0 0";
+            iframeBody.style.width = "142.857%"; /* Compensate for the scale down */
+            iframeBody.style.height = "142.857%"; /* Compensate for the scale down */
+        };
+    </script>
+</body>
+</html>
