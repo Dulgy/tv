@@ -175,7 +175,7 @@
                 const videoData = await videoResponse.json();
 
                 if (videoData.items.length > 0) {
-                    config.youtube_live_video_id = videoData.items[0].id.videoId;
+                    config.youtube_channel_id = videoData.items[0].id.videoId;
                 }
             }
 
@@ -191,7 +191,7 @@
         async function loadStream(service) {
             const config = await loadConfig();
 
-            const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
+            const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_video_id}?autoplay=1`;
             const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
             const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
             const kickEmbed = `https://kick.com/${config.kick_live_id}/embed`;
@@ -238,7 +238,7 @@
         async function loadChat() {
             const config = await loadConfig();
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
-            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
+            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
         }
 
