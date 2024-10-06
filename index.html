@@ -180,12 +180,12 @@
             }
 
             // Conditionally display buttons
+            if (config.kick_live_id) document.querySelector('.kick-btn').style.display = 'block';
             if (config.youtube_channel_id && config.youtube_channel_id.trim() !== "") {
 				document.querySelector('.youtube-btn').style.display = 'block';
 			}
             if (config.twitch_channel) document.querySelector('.twitch-btn').style.display = 'block';
             if (config.rumble_live_id) document.querySelector('.rumble-btn').style.display = 'block';
-            if (config.kick_live_id) document.querySelector('.kick-btn').style.display = 'block';
 
             return config;
         }
@@ -196,20 +196,20 @@
             const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
             const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
             const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
-            const kickEmbed = `https://player.kick.com/${config.kick_live_id}`;
+            const kickEmbed = `https://player.kick.com/${config.kick_live_id}/embed`;
 
             const iframe = document.getElementById('live-stream');
 
-            if (service === 'kick') {
+            
+            if (service === 'youtube') {
+				iframe.src = youtubeEmbed;
+			} else if (service === 'twitch') {
+                iframe.src = twitchEmbed;
+            } else if (service === 'rumble') {
+                iframe.src = rumbleEmbed;
+            } else if (service === 'kick') {
                 iframe.src = kickEmbed;
             }
-            iframe.src = youtubeEmbed;
-            if (service === 'twitch') {
-                iframe.src = twitchEmbed;
-            }
-			if (service === 'rumble') {
-                iframe.src = rumbleEmbed;
-            } 
         }
 
         function switchTab(tabId) {
