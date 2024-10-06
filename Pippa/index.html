@@ -180,12 +180,14 @@
             }
 
             // Conditionally display buttons
-            if (config.kick_live_id) document.querySelector('.kick-btn').style.display = 'block';
-            if (config.youtube_channel_id && config.youtube_channel_id.trim() !== "") {
-				document.querySelector('.youtube-btn').style.display = 'block';
-			}
             if (config.twitch_channel && config.twitch_channel.trim() !== "") {
 				document.querySelector('.twitch-btn').style.display = 'block';
+			}
+            if (config.kick_live_id && config.kick_live_id.trim() !== "") {
+				document.querySelector('.kick-btn').style.display = 'block';
+			}
+            if (config.youtube_channel_id && config.youtube_channel_id.trim() !== "") {
+				document.querySelector('.youtube-btn').style.display = 'block';
 			}
             if (config.rumble_live_id && config.rumble_live_id.trim() !== "") {
 				document.querySelector('.rumble-btn').style.display = 'block';
