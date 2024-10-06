@@ -200,15 +200,16 @@
 
             const iframe = document.getElementById('live-stream');
 
-            
+            if (service === 'kick') {
+                iframe.src = kickEmbed;
+            }
             iframe.src = youtubeEmbed;
             if (service === 'twitch') {
                 iframe.src = twitchEmbed;
-            } else if (service === 'rumble') {
-                iframe.src = rumbleEmbed;
-            } else if (service === 'kick') {
-                iframe.src = kickEmbed;
             }
+			if (service === 'rumble') {
+                iframe.src = rumbleEmbed;
+            } 
         }
 
         function switchTab(tabId) {
