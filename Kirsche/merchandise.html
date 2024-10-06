@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kirsche Merchandise</title>
+    <style>
+        /* Your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header {
+            text-align: center;
+        }
+        #merchandise-list, #search-results {
+            margin: 20px;
+        }
+        .merchandise-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kirsche Merchandise</h1>
+    </header>
+
+    <section id="merchandise-list">
+        </section>
+
+    <section id="search-results">
+        </section>
+
+    <script>
+        const merchandiseList = document.getElementById('merchandise-list');
+        const searchResults = document.getElementById('search-results');
+
+        // Function to fetch merchandise data (replace with your actual implementation)
+        function fetchMerchandise() {
+            // ... Fetch merchandise data and populate the merchandise list
+            const merchandiseData = [
+                { name: 'Kirsche Gaming Mouse', price: 29.99, image: 'mouse.jpg', domain: 'gamersupps' },
+                { name: 'Kirsche T-Shirt', price: 19.99, image: 'tshirt.jpg', domain: 'uwu market' },
+                // ... Add more merchandise items
+            ];
+
+            merchandiseData.forEach((item) => {
+                const merchandiseItem = document.createElement('div');
+                merchandiseItem.classList.add('merchandise-item');
+                merchandiseItem.innerHTML = `
+                    <h2>${item.name}</h2>
+                    <img src="${item.image}" alt="${item.name}">
+                    <p>Price: $${item.price}</p>
+                `;
+                merchandiseList.appendChild(merchandiseItem);
+            });
+        }
+
+        // Function to filter merchandise based on search query and domains
+        function filterMerchandise(query, domains) {
+            return merchandiseList.children.filter((item) => {
+                const itemName = item.querySelector('h2').textContent.toLowerCase();
+                const itemDomain = item.dataset.domain;
+                return itemName.includes(query.toLowerCase()) && domains.includes(itemDomain);
+            });
+        }
+
+        // Event listener for the search input
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', (event) => {
+            const query = event.target.value;
+            const domains = ['gamersupps', 'uwu market']; // Replace with your desired domains
+
+            const filteredResults = filterMerchandise(query, domains);
+
+            // Update the search results section with the filtered results
+            searchResults.innerHTML = '';
+            filteredResults.forEach((item) => {
+                searchResults.appendChild(item.cloneNode(true)); // Clone the original item to avoid modifying it
+            });
+        });
+
+        // Initial fetch of merchandise data
+        fetchMerchandise();
+    </script>
+</body>
+</html>
