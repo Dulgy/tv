@@ -206,10 +206,10 @@
             const iframe = document.getElementById('live-stream');
 
             
-            if (service === 'twitch') {
-                iframe.src = twitchEmbed;
-			} else if (service === 'youtube') {
+            if (service === 'youtube') {
 				iframe.src = youtubeEmbed;
+			} else if (service === 'twitch') {
+                iframe.src = twitchEmbed;
             } else if (service === 'rumble') {
                 iframe.src = rumbleEmbed;
             } else if (service === 'kick') {
