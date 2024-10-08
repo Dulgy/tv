@@ -215,6 +215,30 @@
             } else if (service === 'kick') {
                 iframe.src = kickEmbed;
             }
+			<script>
+    async function loadStream(service) {
+        const config = await loadConfig();
+
+        const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
+        const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
+        const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
+        const kickEmbed = `https://player.kick.com/${config.kick_live_id}`;
+
+        const iframe = document.getElementById('live-stream');
+
+        if (service === 'youtube') {
+            iframe.src = youtubeEmbed;
+        } else if (service === 'twitch') {
+            iframe.src = twitchEmbed;
+        }
+
+        // Enable fullscreen for both YouTube and Twitch
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.setAttribute('allow', 'fullscreen');  // Allow fullscreen mode
+    }
+</script>
+
+			
         }
 
         function switchTab(tabId) {
@@ -269,8 +293,8 @@
                 <button class="rumble-btn" style="display:none" onclick="loadStream('rumble')">Rumble</button>
                 <button class="kick-btn" style="display:none" onclick="loadStream('kick')">Kick</button>
             </div>
-            <iframe id="live-stream" src=""></iframe>
-        </div>
+			<iframe id="live-stream" src="" allowfullscreen allow="fullscreen"></iframe>
+       </div>
         <div class="chat-container">
             <div class="tabs">
                 <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
