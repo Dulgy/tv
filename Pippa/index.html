@@ -28,14 +28,14 @@
             flex: 1;
         }
         .stream-container {
-            flex: 3.15; /* Increased by 5% */
+            flex: 3.15;
             display: flex-start;
             flex-direction: column;
             margin-top: 0;
             padding-top: 0;
         }
         .chat-container {
-            flex: 0.85; /* Decreased by 5% */
+            flex: 0.85;
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -68,7 +68,6 @@
         }
         .stream-buttons .youtube-btn,
         .stream-buttons .twitch-btn,
-        .stream-buttons .rumble-btn,
         .stream-buttons .kick-btn {
             flex: 1;
             padding: 0.5rem;
@@ -80,9 +79,6 @@
         }
         .stream-buttons .twitch-btn {
             background-color: #9146FF;
-        }
-        .stream-buttons .rumble-btn {
-            background-color: lightgreen;
         }
         .stream-buttons .kick-btn {
             background-color: #32CD32;
@@ -102,9 +98,6 @@
         }
         .tabs .twitch-btn {
             background-color: #9146FF;
-        }
-        .tabs .rumble-btn {
-            background-color: lightgreen;
         }
         .tabs img {
             height: 20px;
@@ -161,75 +154,53 @@
         }
     </style>
     <script>
+        let configData = null;  // To store config.json data
+        let menuData = null;    // To store menu.json data
+
+        // Load config.json only once
         async function loadConfig() {
-            const response = await fetch('config.json');
-            const config = await response.json();
+            if (!configData) {  // Only fetch if configData hasn't been loaded
+                const response = await fetch('config.json');
+                configData = await response.json();
 
-            // Load YouTube live video ID
-            const apiKey = config.youtube_api_key;
-            const channelId = config.youtube_channel_id;
+                // Load YouTube live video ID
+                const apiKey = configData.youtube_api_key;
+                const channelId = configData.youtube_channel_id;
 
-            if (apiKey && channelId) {
-                const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
-                const videoResponse = await fetch(apiUrl);
-                const videoData = await videoResponse.json();
+                if (apiKey && channelId) {
+                    const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
+                    const videoResponse = await fetch(apiUrl);
+                    const videoData = await videoResponse.json();
 
-                if (videoData.items.length > 0) {
-                    config.youtube_live_video_id = videoData.items[0].id.videoId;
+                    if (videoData.items.length > 0) {
+                        configData.youtube_live_video_id = videoData.items[0].id.videoId;
+                    }
+                }
+
+                // Conditionally display buttons
+                if (configData.twitch_channel && configData.twitch_channel.trim() !== "") {
+                    document.querySelector('.twitch-btn').style.display = 'block';
+                }
+                if (configData.kick_live_id && configData.kick_live_id.trim() !== "") {
+                    document.querySelector('.kick-btn').style.display = 'block';
+                }
+                if (configData.youtube_channel_id && configData.youtube_channel_id.trim() !== "") {
+                    document.querySelector('.youtube-btn').style.display = 'block';
                 }
             }
-
-            // Conditionally display buttons
-            if (config.twitch_channel && config.twitch_channel.trim() !== "") {
-				document.querySelector('.twitch-btn').style.display = 'block';
-			}
-            if (config.kick_live_id && config.kick_live_id.trim() !== "") {
-				document.querySelector('.kick-btn').style.display = 'block';
-			}
-            if (config.youtube_channel_id && config.youtube_channel_id.trim() !== "") {
-				document.querySelector('.youtube-btn').style.display = 'block';
-			}
-            if (config.rumble_live_id && config.rumble_live_id.trim() !== "") {
-				document.querySelector('.rumble-btn').style.display = 'block';
-			}
-            return config;
+            return configData;
         }
 
-        async function loadStream(service) {
-            const config = await loadConfig();
-
-            const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
-            const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
-            const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
-            const kickEmbed = `https://player.kick.com/${config.kick_live_id}`;
-
-            const iframe = document.getElementById('live-stream');
-
-            
-            if (service === 'youtube') {
-				iframe.src = youtubeEmbed;
-			} else if (service === 'twitch') {
-                iframe.src = twitchEmbed;
-            } else if (service === 'rumble') {
-                iframe.src = rumbleEmbed;
-            } else if (service === 'kick') {
-                iframe.src = kickEmbed;
-            }
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-        }
-
+        // Load menu.json only once
         async function loadMenu() {
-            const response = await fetch('menu.json');
-            const menuItems = await response.json();
+            if (!menuData) {  // Only fetch if menuData hasn't been loaded
+                const response = await fetch('menu.json');
+                menuData = await response.json();
+            }
+
             const menuList = document.getElementById('menu-list');
             menuList.innerHTML = '';
-            menuItems.forEach(item => {
+            menuData.forEach(item => {
                 const li = document.createElement('li');
                 const a = document.createElement('a');
                 a.href = item.url;
@@ -239,22 +210,50 @@
             });
         }
 
+        // Stream loader using configData
+        async function loadStream(service) {
+            const config = await loadConfig();  // Use the globally stored configData
+
+            const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
+            const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
+
+            const iframe = document.getElementById('live-stream');
+            
+            if (service === 'youtube') {
+                iframe.src = youtubeEmbed;
+            } else if (service === 'twitch') {
+                iframe.src = twitchEmbed;
+            }
+
+            // Enable fullscreen
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('allow', 'fullscreen');
+        }
+
+        // Chat loader using configData
+        async function loadChat() {
+            const config = await loadConfig();  // Use the globally stored configData
+
+            document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
+            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        async function loadChat() {
-            const config = await loadConfig();
-            document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
-            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
-            document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
-        }
-
         window.onload = async function() {
-            await loadStream();
-            await loadChat();
-            switchTab('twitch-chat');
-            await loadMenu();
+            await loadStream('youtube');  // Autoload YouTube stream
+            await loadChat();  // Load chat only once
+            switchTab('youtube-chat');  // Default to YouTube chat
+            await loadMenu();  // Load menu only once
         }
     </script>
 </head>
@@ -267,25 +266,20 @@
                 </button>
                 <button class="youtube-btn" style="display:none" onclick="loadStream('youtube')">YouTube</button>
                 <button class="twitch-btn" style="display:none" onclick="loadStream('twitch')">Twitch</button>
-                <button class="rumble-btn" style="display:none" onclick="loadStream('rumble')">Rumble</button>
                 <button class="kick-btn" style="display:none" onclick="loadStream('kick')">Kick</button>
             </div>
-            <iframe id="live-stream" src=""></iframe>
+            <iframe id="live-stream" src="" allowfullscreen allow="fullscreen"></iframe>
         </div>
         <div class="chat-container">
             <div class="tabs">
-                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
                 <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
-                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="../Rumble.png" alt="Rumble Chat"></button>
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
             </div>
-            <div id="twitch-chat" class="tab-content active">
-                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
-            </div>
-            <div id="youtube-chat" class="tab-content">
+            <div id="youtube-chat" class="tab-content active">
                 <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
             </div>
-            <div id="rumble-chat" class="tab-content">
-                <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
+            <div id="twitch-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
             </div>
         </div>
     </main>
