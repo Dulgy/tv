@@ -68,7 +68,8 @@
         }
         .stream-buttons .youtube-btn,
         .stream-buttons .twitch-btn,
-        .stream-buttons .rumble-btn {
+        .stream-buttons .rumble-btn,
+        .stream-buttons .kick-btn {
             flex: 1;
             padding: 0.5rem;
             margin: 0 0.25rem;
@@ -82,6 +83,9 @@
         }
         .stream-buttons .rumble-btn {
             background-color: lightgreen;
+        }
+        .stream-buttons .kick-btn {
+            background-color: #32CD32;
         }
         .tabs {
             display: flex;
@@ -101,9 +105,6 @@
         }
         .tabs .rumble-btn {
             background-color: lightgreen;
-        }
-        .tabs .x-btn {
-            background-color: black;
         }
         .tabs img {
             height: 20px;
@@ -158,54 +159,61 @@
             top: 10px;
             left: 10px;
         }
-        .twitter-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
     </style>
     <script>
         async function loadConfig() {
             const response = await fetch('config.json');
             const config = await response.json();
 
-            const apiKey = config.youtube_api_key; // Add your API key in config.json
+            // Load YouTube live video ID
+            const apiKey = config.youtube_api_key;
             const channelId = config.youtube_channel_id;
 
-            const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
-            const videoResponse = await fetch(apiUrl);
-            const videoData = await videoResponse.json();
+            if (apiKey && channelId) {
+                const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
+                const videoResponse = await fetch(apiUrl);
+                const videoData = await videoResponse.json();
 
-            if (videoData.items.length > 0) {
-                config.youtube_live_video_id = videoData.items[0].id.videoId;
+                if (videoData.items.length > 0) {
+                    config.youtube_live_video_id = videoData.items[0].id.videoId;
+                }
             }
 
+            // Conditionally display buttons
+            if (config.twitch_channel && config.twitch_channel.trim() !== "") {
+				document.querySelector('.twitch-btn').style.display = 'block';
+			}
+            if (config.kick_live_id && config.kick_live_id.trim() !== "") {
+				document.querySelector('.kick-btn').style.display = 'block';
+			}
+            if (config.youtube_channel_id && config.youtube_channel_id.trim() !== "") {
+				document.querySelector('.youtube-btn').style.display = 'block';
+			}
+            if (config.rumble_live_id && config.rumble_live_id.trim() !== "") {
+				document.querySelector('.rumble-btn').style.display = 'block';
+			}
             return config;
         }
 
         async function loadStream(service) {
             const config = await loadConfig();
+
             const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
             const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
             const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
+            const kickEmbed = `https://player.kick.com/${config.kick_live_id}`;
 
             const iframe = document.getElementById('live-stream');
 
+            
             if (service === 'youtube') {
-                iframe.src = youtubeEmbed;
-            } else if (service === 'twitch') {
+				iframe.src = youtubeEmbed;
+			} else if (service === 'twitch') {
                 iframe.src = twitchEmbed;
             } else if (service === 'rumble') {
                 iframe.src = rumbleEmbed;
-            } else {
-                iframe.src = youtubeEmbed;
-
-                iframe.onerror = function() {
-                    iframe.src = twitchEmbed;
-                    iframe.onerror = function() {
-                        iframe.src = rumbleEmbed;
-                    };
-                };
+            } else if (service === 'kick') {
+                iframe.src = kickEmbed;
             }
         }
 
@@ -242,38 +250,11 @@
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
         }
 
-		async function loadTwitterFeed() {
-			const config = await loadConfig();
-			const response = await fetch(config.x_id_list);
-			let tweetIds = await response.json();
-
-			// Ensure tweetIds is an array
-			if (!Array.isArray(tweetIds)) {
-				tweetIds = [tweetIds];
-			}  else {
-				tweetIds.reverse();
-			}
-
-			const twitterIframeContainer = document.getElementById('twitter-iframe-container');
-			twitterIframeContainer.innerHTML = ''; // Clear previous iframes if any
-
-			tweetIds.forEach(tweet => {
-				const iframe = document.createElement('iframe');
-				iframe.className = 'twitter-iframe';
-				iframe.src = `https://twitframe.com/show?url=https://twitter.com/i/status/${tweet.Tweet_ID}`;
-				iframe.style.width = "100%";
-				iframe.style.height = "auto";
-				iframe.frameBorder = "0";
-				twitterIframeContainer.appendChild(iframe);
-			});
-		}
-
         window.onload = async function() {
             await loadStream();
             await loadChat();
             switchTab('twitch-chat');
             await loadMenu();
-            await loadTwitterFeed();
         }
     </script>
 </head>
@@ -284,18 +265,18 @@
                 <button class="menu-button" onclick="toggleSidebar()">
                     <img src="menu.png" alt="Menu">
                 </button>
-                <button class="youtube-btn" onclick="loadStream('youtube')">YouTube</button>
-                <button class="twitch-btn" onclick="loadStream('twitch')">Twitch</button>
-                <button class="rumble-btn" onclick="loadStream('rumble')">Rumble</button>
+                <button class="youtube-btn" style="display:none" onclick="loadStream('youtube')">YouTube</button>
+                <button class="twitch-btn" style="display:none" onclick="loadStream('twitch')">Twitch</button>
+                <button class="rumble-btn" style="display:none" onclick="loadStream('rumble')">Rumble</button>
+                <button class="kick-btn" style="display:none" onclick="loadStream('kick')">Kick</button>
             </div>
             <iframe id="live-stream" src=""></iframe>
         </div>
         <div class="chat-container">
             <div class="tabs">
-                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="Twitch.png" alt="Twitch Chat"></button>
-                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="YouTube.png" alt="YouTube Chat"></button>
-                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="Rumble.png" alt="Rumble Chat"></button>
-                <button class="x-btn" onclick="switchTab('twitter-chat')">X</button>
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
+                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
+                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="../Rumble.png" alt="Rumble Chat"></button>
             </div>
             <div id="twitch-chat" class="tab-content active">
                 <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
@@ -305,9 +286,6 @@
             </div>
             <div id="rumble-chat" class="tab-content">
                 <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
-            </div>
-            <div id="twitter-chat" class="tab-content">
-                <div id="twitter-iframe-container"></div>
             </div>
         </div>
     </main>
