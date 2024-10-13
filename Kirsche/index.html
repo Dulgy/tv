@@ -28,14 +28,14 @@
             flex: 1;
         }
         .stream-container {
-            flex: 3.15; /* readjust to 3.15 if fail */
+            flex: 3.15; /* sets horizontal length dont change */
             display: flex-start;
             flex-direction: column;
             margin-top: 0;
             padding-top: 0;
         }
         .chat-container {
-            flex: 0.85; /* readjust to 0.85 if fail */
+            flex: 0.85; /* sets horizontal length dont change */
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -154,31 +154,29 @@
         }
 
         /* Carousel styles */
-        .carousel-container {
-            width: 100%;
-            overflow: hidden;
-            /* background-color: #f8f9fa; */
-            padding: 5 rem 0; /* Decrease padding to reduce gap */
-            margin-top: -100px;  /* Bring the carousel closer to the page */
-        }
+		.carousel-container {
+			width: 100%;
+			overflow: hidden;
+			margin-top: -100px;
+		}
 
-        .carousel-track {
-            display: flex;
-            animation: scroll 20s linear infinite;
-        }
+		.carousel-track {
+			display: flex;
+			transition: transform 0.5s ease-in-out;
+		}
 
-        .carousel-item {
-            flex: 0 0 auto;
-            margin: 0 1rem;
-            text-align: center;
-        }
+		.carousel-item {
+			flex: 0 0 auto;
+			margin: 0 1rem;
+			text-align: center;
+		}
 
-        .carousel-item img {
-            max-width: 150px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
+		.carousel-item img {
+			max-width: 150px;
+			height: auto;
+			display: block;
+			margin: 0 auto;
+		}
 
         @keyframes scroll {
             0% {
@@ -222,8 +220,52 @@
                     document.querySelector('.youtube-btn').style.display = 'block';
                 }
             }
-            return configData;
-        }
+			return configData;
+		}
+
+		document.addEventListener('DOMContentLoaded', function () {
+			const carouselTrack = document.querySelector('.carousel-track');
+			const items = Array.from(carouselTrack.children);
+			let currentIndex = 0;
+
+			// Mouse hover to scroll left
+			carouselTrack.addEventListener('mouseenter', () => {
+				carouselTrack.style.transform = `translateX(-${currentIndex * (items[0].offsetWidth + 16)}px)`; // 16 is margin
+			});
+
+			// Mouse move for left/right scrolling
+			let mouseStartX = 0;
+			let mouseCurrentX = 0;
+
+			carouselTrack.addEventListener('mousedown', (e) => {
+				mouseStartX = e.clientX;
+				carouselTrack.style.transition = 'none'; // Disable transition during drag
+			});
+
+			document.addEventListener('mouseup', (e) => {
+				mouseCurrentX = e.clientX;
+				const dragDistance = mouseStartX - mouseCurrentX;
+
+				// Drag left (next item)
+				if (dragDistance > 50) {
+					currentIndex = (currentIndex + 1) % items.length; // Loop forward
+				}
+
+				// Drag right (previous item)
+				if (dragDistance < -50) {
+					currentIndex = (currentIndex - 1 + items.length) % items.length; // Loop backward
+				}
+
+				carouselTrack.style.transition = 'transform 0.5s ease-in-out'; // Re-enable transition
+				carouselTrack.style.transform = `translateX(-${currentIndex * (items[0].offsetWidth + 16)}px)`;
+			});
+
+			// Handle looping by updating the index on mouse release
+			document.addEventListener('mouseleave', () => {
+				carouselTrack.style.transform = `translateX(-${currentIndex * (items[0].offsetWidth + 16)}px)`;
+			});
+		});
+
 
         // Load menu.json
         async function loadMenu() {
