@@ -9,7 +9,7 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%;
+            height: 120%;
         }
         body {
             display: flex;
@@ -28,14 +28,14 @@
             flex: 1;
         }
         .stream-container {
-            flex: 3.15; /* Increased by 5% */
+            flex: 3.15;
             display: flex-start;
             flex-direction: column;
             margin-top: 0;
             padding-top: 0;
         }
         .chat-container {
-            flex: 0.85; /* Decreased by 5% */
+            flex: 0.85;
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -68,7 +68,6 @@
         }
         .stream-buttons .youtube-btn,
         .stream-buttons .twitch-btn,
-        .stream-buttons .rumble-btn,
         .stream-buttons .kick-btn {
             flex: 1;
             padding: 0.5rem;
@@ -80,9 +79,6 @@
         }
         .stream-buttons .twitch-btn {
             background-color: #9146FF;
-        }
-        .stream-buttons .rumble-btn {
-            background-color: lightgreen;
         }
         .stream-buttons .kick-btn {
             background-color: #32CD32;
@@ -102,9 +98,6 @@
         }
         .tabs .twitch-btn {
             background-color: #9146FF;
-        }
-        .tabs .rumble-btn {
-            background-color: lightgreen;
         }
         .tabs img {
             height: 20px;
@@ -159,35 +152,129 @@
             top: 10px;
             left: 10px;
         }
+
+        /* Carousel styles */
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 5rem 0;
+            margin-top: -100px;
+        }
+
+        .carousel-track {
+            display: flex;
+        }
+
+        .carousel-item {
+            flex: 0 0 auto;
+            margin: 0 1rem;
+            text-align: center;
+        }
+
+        .carousel-item img {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
     </style>
     <script>
+        let configData = null;
+
+        // Load config.json
         async function loadConfig() {
-            const response = await fetch('config.json');
-            const config = await response.json();
+            if (!configData) {
+                const response = await fetch('config.json');
+                configData = await response.json();
 
-            // Load YouTube live video ID
-            const apiKey = config.youtube_api_key;
-            const channelId = config.youtube_channel_id;
+                const apiKey = configData.youtube_api_key;
+                const channelId = configData.youtube_channel_id;
 
-            if (apiKey && channelId) {
-                const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
-                const videoResponse = await fetch(apiUrl);
-                const videoData = await videoResponse.json();
+                if (apiKey && channelId) {
+                    const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
+                    const videoResponse = await fetch(apiUrl);
+                    const videoData = await videoResponse.json();
 
-                if (videoData.items.length > 0) {
-                    config.youtube_live_video_id = videoData.items[0].id.videoId;
+                    if (videoData.items.length > 0) {
+                        configData.youtube_live_video_id = videoData.items[0].id.videoId;
+                    }
+                }
+
+                if (configData.twitch_channel) {
+                    document.querySelector('.twitch-btn').style.display = 'block';
+                }
+                if (configData.kick_live_id) {
+                    document.querySelector('.kick-btn').style.display = 'block';
+                }
+                if (configData.youtube_channel_id) {
+                    document.querySelector('.youtube-btn').style.display = 'block';
                 }
             }
+            return configData;
+        }
 
-            // Conditionally display buttons
-            if (config.kick_live_id) document.querySelector('.kick-btn').style.display = 'block';
-            if (config.youtube_channel_id && config.youtube_channel_id.trim() !== "") {
-				document.querySelector('.youtube-btn').style.display = 'block';
-			}
-            if (config.twitch_channel) document.querySelector('.twitch-btn').style.display = 'block';
-            if (config.rumble_live_id) document.querySelector('.rumble-btn').style.display = 'block';
+        // Load merchandise JSON and populate the carousel
+        async function loadMerch() {
+            const config = await loadConfig();
+            const response = await fetch('merch.json');
+            const merchData = await response.json();
+            const carouselTrack = document.querySelector('.carousel-track');
 
-            return config;
+            // Clear existing items in the carousel (optional, for repeated calls)
+            carouselTrack.innerHTML = '';
+
+            // Prepend a "Tip Jar" item if streamelements_id is available
+            if (config.streamelements_id) {
+                const tipJar = document.createElement('div');
+                tipJar.classList.add('carousel-item');
+                tipJar.innerHTML = `
+                    <a href="https://streamelements.com/${config.streamelements_id}/tip" target="_blank">
+                        <img src="https://media.influencerupdate.biz/2018/4/88369/streamelements-r225x.png" alt="Tip Jar">
+                        <p>Tip Jar</p>
+                        <p></p>
+                    </a>
+                `;
+                carouselTrack.appendChild(tipJar);
+            }
+
+            // Append merchandise items twice for looping effect
+            for (let i = 0; i < 2; i++) {
+                merchData.forEach(item => {
+                    const merchItem = document.createElement('div');
+                    merchItem.classList.add('carousel-item');
+                    merchItem.innerHTML = `
+                        <a href="${item.link}" target="_blank">
+                            <img src="${item.image}" alt="${item.product_name}">
+                            <p>${item.product_name}</p>
+                            <p>${item.price}</p>
+                        </a>
+                    `;
+                    carouselTrack.appendChild(merchItem);
+                });
+            }
+
+            // Calculate the total number of items
+            const totalItems = merchData.length + 1;  // Add 1 for the Tip Jar
+
+            // If there are less than 9 items, don't animate
+            if (totalItems >= 9) {
+                // Calculate the total width of all items and set animation duration accordingly
+                const itemWidth = 150 + 32;  // Assuming each item has 150px width + 32px margin
+                const totalWidth = totalItems * itemWidth;
+                const scrollDuration = (totalWidth / 100) * 0.5;  // Speed up by 2.5x
+
+                // Set dynamic animation duration
+                carouselTrack.style.animation = `scroll ${scrollDuration}s linear infinite`;
+            }
         }
 
         async function loadStream(service) {
@@ -195,21 +282,24 @@
 
             const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
             const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
-            const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
-            const kickEmbed = `https://player.kick.com/${config.kick_live_id}`;
 
             const iframe = document.getElementById('live-stream');
 
-            
             if (service === 'youtube') {
-				iframe.src = youtubeEmbed;
-			} else if (service === 'twitch') {
+                iframe.src = youtubeEmbed;
+            } else if (service === 'twitch') {
                 iframe.src = twitchEmbed;
-            } else if (service === 'rumble') {
-                iframe.src = rumbleEmbed;
-            } else if (service === 'kick') {
-                iframe.src = kickEmbed;
             }
+
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('allow', 'fullscreen');
+        }
+
+        async function loadChat() {
+            const config = await loadConfig();
+
+            document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}&darkpopout`;
+            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
         }
 
         function switchTab(tabId) {
@@ -219,38 +309,29 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        async function loadMenu() {
-            const response = await fetch('menu.json');
-            const menuItems = await response.json();
-            const menuList = document.getElementById('menu-list');
-            menuList.innerHTML = '';
-            menuItems.forEach(item => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = item.url;
-                a.textContent = item.name;
-                li.appendChild(a);
-                menuList.appendChild(li);
-            });
-        }
-
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        async function loadChat() {
-            const config = await loadConfig();
-            document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}`;
-            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
-            document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
+        window.onload = async function() {
+            await loadStream('youtube');
+            await loadChat();
+            switchTab('youtube-chat');
+            await loadMerch();  // Load merchandise carousel
         }
 
-        window.onload = async function() {
-            await loadStream();
-            await loadChat();
-            switchTab('twitch-chat');
-            await loadMenu();
-        }
+        // Pause scrolling on mouseover, resume on mouseout
+        document.addEventListener('DOMContentLoaded', () => {
+            const carouselTrack = document.querySelector('.carousel-track');
+
+            carouselTrack.addEventListener('mouseover', () => {
+                carouselTrack.style.animationPlayState = 'paused';
+            });
+
+            carouselTrack.addEventListener('mouseout', () => {
+                carouselTrack.style.animationPlayState = 'running';
+            });
+        });
     </script>
 </head>
 <body>
@@ -258,32 +339,33 @@
         <div class="stream-container">
             <div class="stream-buttons">
                 <button class="menu-button" onclick="toggleSidebar()">
-                    <img src="menu.png" alt="Menu">
+                    <img src="../menu.png" alt="Menu">
                 </button>
                 <button class="youtube-btn" style="display:none" onclick="loadStream('youtube')">YouTube</button>
                 <button class="twitch-btn" style="display:none" onclick="loadStream('twitch')">Twitch</button>
-                <button class="rumble-btn" style="display:none" onclick="loadStream('rumble')">Rumble</button>
                 <button class="kick-btn" style="display:none" onclick="loadStream('kick')">Kick</button>
             </div>
-            <iframe id="live-stream" src=""></iframe>
+            <iframe id="live-stream" src="" allowfullscreen allow="fullscreen"></iframe>
         </div>
         <div class="chat-container">
             <div class="tabs">
-                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
                 <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
-                <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="../Rumble.png" alt="Rumble Chat"></button>
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
             </div>
-            <div id="twitch-chat" class="tab-content active">
-                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
-            </div>
-            <div id="youtube-chat" class="tab-content">
+            <div id="youtube-chat" class="tab-content active">
                 <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
             </div>
-            <div id="rumble-chat" class="tab-content">
-                <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
+            <div id="twitch-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
             </div>
         </div>
     </main>
+
+    <!-- Merchandise Carousel -->
+    <div class="carousel-container">
+        <div class="carousel-track"></div>
+    </div>
+
     <div id="sidebar" class="sidebar">
         <button class="menu-button" onclick="toggleSidebar()">
             <img src="menu.png" alt="Menu">
