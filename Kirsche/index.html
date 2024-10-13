@@ -222,6 +222,25 @@
             return configData;
         }
 
+        // Load menu.json
+        async function loadMenu() {
+            if (!menuData) {
+                const response = await fetch('menu.json');
+                menuData = await response.json();
+            }
+
+            const menuList = document.getElementById('menu-list');
+            menuList.innerHTML = '';
+            menuData.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.textContent = item.name;
+                li.appendChild(a);
+                menuList.appendChild(li);
+            });
+        }
+
         // Load merchandise JSON and populate the carousel
         async function loadMerch() {
             const config = await loadConfig();
