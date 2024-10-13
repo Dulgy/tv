@@ -28,14 +28,14 @@
             flex: 1;
         }
         .stream-container {
-            flex: 3.15; /* sets horizontal length dont change */
+            flex: 3.15;
             display: flex-start;
             flex-direction: column;
             margin-top: 0;
             padding-top: 0;
         }
         .chat-container {
-            flex: 0.85; /* sets horizontal length dont change */
+            flex: 0.85;
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -157,14 +157,13 @@
         .carousel-container {
             width: 100%;
             overflow: hidden;
-            /* background-color: #f8f9fa; */
-            padding: 5 rem 0; /* Decrease padding to reduce gap */
-            margin-top: -30px;  /* Bring the carousel closer to the page */
+            padding: 5rem 0;
+            margin-top: -100px;
         }
 
         .carousel-track {
             display: flex;
-            animation: scroll 20s linear infinite;
+            animation: scroll 20s linear infinite; /* Default animation that will be overridden dynamically */
         }
 
         .carousel-item {
@@ -248,25 +247,35 @@
         async function loadMerch() {
             const response = await fetch('merch.json');
             const merchData = await response.json();
-
             const carouselTrack = document.querySelector('.carousel-track');
 
-            for (let i = 0; i < 2; i++) {
-				merchData.forEach(item => {
-					const merchItem = document.createElement('div');
-					merchItem.classList.add('carousel-item');
+            // Clear existing items in the carousel (optional, for repeated calls)
+            carouselTrack.innerHTML = '';
 
-					merchItem.innerHTML = `
-						<a href="${item.link}" target="_blank">
-							<img src="${item.image}" alt="${item.product_name}">
-							<p>${item.product_name}</p>
-							<p>${item.price}</p>
-						</a>
-					`;
-					carouselTrack.appendChild(merchItem);
-				});
-			}
-			
+            // Append merchandise items twice for looping effect
+            for (let i = 0; i < 2; i++) {
+                merchData.forEach(item => {
+                    const merchItem = document.createElement('div');
+                    merchItem.classList.add('carousel-item');
+                    merchItem.innerHTML = `
+                        <a href="${item.link}" target="_blank">
+                            <img src="${item.image}" alt="${item.product_name}">
+                            <p>${item.product_name}</p>
+                            <p>${item.price}</p>
+                        </a>
+                    `;
+                    carouselTrack.appendChild(merchItem);
+                });
+            }
+
+            // Calculate the total width of all items and set animation duration accordingly
+            const totalItems = merchData.length * 2;  // Duplicated items
+            const itemWidth = 150 + 32;  // Assuming each item has 150px width + 32px margin
+            const totalWidth = totalItems * itemWidth;
+            const scrollDuration = totalWidth / 100;  // Adjust speed: lower divisor = faster scroll
+
+            // Set dynamic animation duration
+            carouselTrack.style.animation = `scroll ${scrollDuration}s linear infinite`;
         }
 
         async function loadStream(service) {
@@ -312,6 +321,15 @@
             await loadMenu();
             await loadMerch();  // Load merchandise carousel
         }
+
+        // Pause scrolling on mouseover, resume on mouseout
+        const carouselTrack = document.querySelector('.carousel-track');
+        carouselTrack.addEventListener('mouseover', () => {
+            carouselTrack.style.animationPlayState = 'paused';
+        });
+        carouselTrack.addEventListener('mouseout', () => {
+            carouselTrack.style.animationPlayState = 'running';
+        });
     </script>
 </head>
 <body>
