@@ -250,20 +250,35 @@
             const merchData = await response.json();
 
             const carouselTrack = document.querySelector('.carousel-track');
+			for (let i = 0; i < 2; i++) {
+				// Prepend a "Tip Jar" item if streamelements_id is available
+				if (config.streamelements_id) {
+					const tipJar = document.createElement('div');
+					tipJar.classList.add('carousel-item');
+					tipJar.innerHTML = `
+						<a href="https://streamelements.com/${config.streamelements_id}/tip" target="_blank">
+							<img src="https://media.influencerupdate.biz/2018/4/88369/streamelements-r225x.png" alt="Tip Jar">
+							<p>Tip Jar</p>
+							<p></p>
+						</a>
+					`;
+					carouselTrack.appendChild(tipJar);
+				}
 
-            merchData.forEach(item => {
-                const merchItem = document.createElement('div');
-                merchItem.classList.add('carousel-item');
+				merchData.forEach(item => {
+					const merchItem = document.createElement('div');
+					merchItem.classList.add('carousel-item');
 
-                merchItem.innerHTML = `
-                    <a href="${item.link}" target="_blank">
-                        <img src="${item.image}" alt="${item.product_name}">
-                        <p>${item.product_name}</p>
-                        <p>${item.price}</p>
-                    </a>
-                `;
-                carouselTrack.appendChild(merchItem);
-            });
+					merchItem.innerHTML = `
+						<a href="${item.link}" target="_blank">
+							<img src="${item.image}" alt="${item.product_name}">
+							<p>${item.product_name}</p>
+							<p>${item.price}</p>
+						</a>
+					`;
+					carouselTrack.appendChild(merchItem);
+				});
+			}
         }
 
         async function loadStream(service) {
