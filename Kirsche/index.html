@@ -262,11 +262,12 @@
                         <p></p>
                     </a>
                 `;
-                carouselTrack.appendChild(tipJar);
+                
             }
 
             // Append merchandise items twice for looping effect
             for (let i = 0; i < 2; i++) {
+				carouselTrack.appendChild(tipJar);
                 merchData.forEach(item => {
                     const merchItem = document.createElement('div');
                     merchItem.classList.add('carousel-item');
@@ -336,6 +337,7 @@
             await loadStream('youtube');
             await loadChat();
             switchTab('youtube-chat');
+			await loadMenu();
             await loadMerch();  // Load merchandise carousel
         }
 
