@@ -163,7 +163,6 @@
 
         .carousel-track {
             display: flex;
-            animation: scroll 20s linear infinite; /* Default animation that will be overridden dynamically */
         }
 
         .carousel-item {
@@ -190,7 +189,6 @@
     </style>
     <script>
         let configData = null;
-        let menuData = null;
 
         // Load config.json
         async function loadConfig() {
@@ -224,33 +222,29 @@
             return configData;
         }
 
-        // Load menu.json
-        async function loadMenu() {
-            if (!menuData) {
-                const response = await fetch('menu.json');
-                menuData = await response.json();
-            }
-
-            const menuList = document.getElementById('menu-list');
-            menuList.innerHTML = '';
-            menuData.forEach(item => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = item.url;
-                a.textContent = item.name;
-                li.appendChild(a);
-                menuList.appendChild(li);
-            });
-        }
-
         // Load merchandise JSON and populate the carousel
         async function loadMerch() {
+            const config = await loadConfig();
             const response = await fetch('merch.json');
             const merchData = await response.json();
             const carouselTrack = document.querySelector('.carousel-track');
 
             // Clear existing items in the carousel (optional, for repeated calls)
             carouselTrack.innerHTML = '';
+
+            // Prepend a "Tip Jar" item if streamelements_id is available
+            if (config.streamelements_id) {
+                const tipJar = document.createElement('div');
+                tipJar.classList.add('carousel-item');
+                tipJar.innerHTML = `
+                    <a href="https://streamelements.com/${config.streamelements_id}/tip" target="_blank">
+                        <img src="https://media.influencerupdate.biz/2018/4/88369/streamelements-r225x.png" alt="Tip Jar">
+                        <p>Tip Jar</p>
+                        <p></p>
+                    </a>
+                `;
+                carouselTrack.appendChild(tipJar);
+            }
 
             // Append merchandise items twice for looping effect
             for (let i = 0; i < 2; i++) {
@@ -268,14 +262,19 @@
                 });
             }
 
-            // Calculate the total width of all items and set animation duration accordingly
-            const totalItems = merchData.length * 2;  // Duplicated items
-            const itemWidth = 150 + 32;  // Assuming each item has 150px width + 32px margin
-            const totalWidth = totalItems * itemWidth;
-            const scrollDuration = totalWidth / 100;  // Adjust speed: lower divisor = faster scroll
+            // Calculate the total number of items
+            const totalItems = merchData.length + 1;  // Add 1 for the Tip Jar
 
-            // Set dynamic animation duration
-            carouselTrack.style.animation = `scroll ${scrollDuration}s linear infinite`;
+            // If there are less than 9 items, don't animate
+            if (totalItems >= 9) {
+                // Calculate the total width of all items and set animation duration accordingly
+                const itemWidth = 150 + 32;  // Assuming each item has 150px width + 32px margin
+                const totalWidth = totalItems * itemWidth;
+                const scrollDuration = (totalWidth / 100) * 1.5;  // Speed up by 1.5x
+
+                // Set dynamic animation duration
+                carouselTrack.style.animation = `scroll ${scrollDuration}s linear infinite`;
+            }
         }
 
         async function loadStream(service) {
@@ -318,17 +317,20 @@
             await loadStream('youtube');
             await loadChat();
             switchTab('youtube-chat');
-            await loadMenu();
             await loadMerch();  // Load merchandise carousel
         }
 
         // Pause scrolling on mouseover, resume on mouseout
-        const carouselTrack = document.querySelector('.carousel-track');
-        carouselTrack.addEventListener('mouseover', () => {
-            carouselTrack.style.animationPlayState = 'paused';
-        });
-        carouselTrack.addEventListener('mouseout', () => {
-            carouselTrack.style.animationPlayState = 'running';
+        document.addEventListener('DOMContentLoaded', () => {
+            const carouselTrack = document.querySelector('.carousel-track');
+
+            carouselTrack.addEventListener('mouseover', () => {
+                carouselTrack.style.animationPlayState = 'paused';
+            });
+
+            carouselTrack.addEventListener('mouseout', () => {
+                carouselTrack.style.animationPlayState = 'running';
+            });
         });
     </script>
 </head>
