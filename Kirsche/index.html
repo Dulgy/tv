@@ -28,14 +28,14 @@
             flex: 1;
         }
         .stream-container {
-            flex: 3.15;
+            flex: 3.15; /* sets horizontal length dont change */
             display: flex-start;
             flex-direction: column;
             margin-top: 0;
             padding-top: 0;
         }
         .chat-container {
-            flex: 0.85;
+            flex: 0.85; /* sets horizontal length dont change */
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -157,12 +157,14 @@
         .carousel-container {
             width: 100%;
             overflow: hidden;
-            padding: 5rem 0;
-            margin-top: -100px;
+            /* background-color: #f8f9fa; */
+            padding: 5 rem 0; /* Decrease padding to reduce gap */
+            margin-top: -30px;  /* Bring the carousel closer to the page */
         }
 
         .carousel-track {
             display: flex;
+            animation: scroll 20s linear infinite;
         }
 
         .carousel-item {
@@ -183,12 +185,13 @@
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(-50%);
+                transform: translateX(-100%);
             }
         }
     </style>
     <script>
         let configData = null;
+        let menuData = null;
 
         // Load config.json
         async function loadConfig() {
@@ -243,57 +246,24 @@
 
         // Load merchandise JSON and populate the carousel
         async function loadMerch() {
-            const config = await loadConfig();
             const response = await fetch('merch.json');
             const merchData = await response.json();
+
             const carouselTrack = document.querySelector('.carousel-track');
 
-            // Clear existing items in the carousel (optional, for repeated calls)
-            carouselTrack.innerHTML = '';
+            merchData.forEach(item => {
+                const merchItem = document.createElement('div');
+                merchItem.classList.add('carousel-item');
 
-            // Prepend a "Tip Jar" item if streamelements_id is available
-            if (config.streamelements_id) {
-                const tipJar = document.createElement('div');
-                tipJar.classList.add('carousel-item');
-                tipJar.innerHTML = `
-                    <a href="https://streamelements.com/${config.streamelements_id}/tip" target="_blank">
-                        <img src="https://media.influencerupdate.biz/2018/4/88369/streamelements-r225x.png" alt="Tip Jar">
-                        <p>Tip Jar</p>
-                        <p></p>
+                merchItem.innerHTML = `
+                    <a href="${item.link}" target="_blank">
+                        <img src="${item.image}" alt="${item.product_name}">
+                        <p>${item.product_name}</p>
+                        <p>${item.price}</p>
                     </a>
                 `;
-                carouselTrack.appendChild(tipJar);
-            }
-
-            // Append merchandise items twice for looping effect
-            for (let i = 0; i < 2; i++) {
-                merchData.forEach(item => {
-                    const merchItem = document.createElement('div');
-                    merchItem.classList.add('carousel-item');
-                    merchItem.innerHTML = `
-                        <a href="${item.link}" target="_blank">
-                            <img src="${item.image}" alt="${item.product_name}">
-                            <p>${item.product_name}</p>
-                            <p>${item.price}</p>
-                        </a>
-                    `;
-                    carouselTrack.appendChild(merchItem);
-                });
-            }
-
-            // Calculate the total number of items
-            const totalItems = merchData.length + 1;  // Add 1 for the Tip Jar
-
-            // If there are less than 9 items, don't animate
-            if (totalItems >= 9) {
-                // Calculate the total width of all items and set animation duration accordingly
-                const itemWidth = 150 + 32;  // Assuming each item has 150px width + 32px margin
-                const totalWidth = totalItems * itemWidth;
-                const scrollDuration = (totalWidth / 100) * 1.5;  // Speed up by 1.5x
-
-                // Set dynamic animation duration
-                carouselTrack.style.animation = `scroll ${scrollDuration}s linear infinite`;
-            }
+                carouselTrack.appendChild(merchItem);
+            });
         }
 
         async function loadStream(service) {
@@ -336,22 +306,9 @@
             await loadStream('youtube');
             await loadChat();
             switchTab('youtube-chat');
-            await loadMenu();  // Load the sidebar menu
+            await loadMenu();
             await loadMerch();  // Load merchandise carousel
         }
-
-        // Pause scrolling on mouseover, resume on mouseout
-        document.addEventListener('DOMContentLoaded', () => {
-            const carouselTrack = document.querySelector('.carousel-track');
-
-            carouselTrack.addEventListener('mouseover', () => {
-                carouselTrack.style.animationPlayState = 'paused';
-            });
-
-            carouselTrack.addEventListener('mouseout', () => {
-                carouselTrack.style.animationPlayState = 'running';
-            });
-        });
     </script>
 </head>
 <body>
