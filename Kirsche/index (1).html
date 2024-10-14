@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Live Stream</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 120%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            margin-top: 0;
+        }
+        main {
+            margin-top: 0;
+        }
+        .main-container {
+            padding-top: 0;
+            display: flex;
+            justify-content: space-between;
+            flex: 1;
+        }
+        .stream-container {
+            flex: 3.15;
+            display: flex-start;
+            flex-direction: column;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        .chat-container {
+            flex: 0.85;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        .stream-buttons {
+            margin-top: 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+        .menu-button {
+            background: 1px solid lightgrey;
+            color: white;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            margin-top: 0;
+            margin-right: 0.5rem;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-button img {
+            width: 100%;
+            height: 100%;
+        }
+        .stream-buttons .youtube-btn,
+        .stream-buttons .twitch-btn,
+        .stream-buttons .kick-btn {
+            flex: 1;
+            padding: 0.5rem;
+            margin: 0 0.25rem;
+            color: white;
+        }
+        .stream-buttons .youtube-btn {
+            background-color: red;
+        }
+        .stream-buttons .twitch-btn {
+            background-color: #9146FF;
+        }
+        .stream-buttons .kick-btn {
+            background-color: #32CD32;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        .tabs button {
+            padding: 0.5rem;
+            margin: 0 0.25rem;
+            color: white;
+        }
+        .tabs .youtube-btn {
+            background-color: red;
+        }
+        .tabs .twitch-btn {
+            background-color: #9146FF;
+        }
+        .tabs img {
+            height: 20px;
+            width: 20px;
+        }
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        .tab-content.active {
+            display: block;
+            height: 100%;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 4rem);
+            border: none;
+        }
+        .chat-iframe {
+            width: 100%;
+            height: calc(100vh - 4rem);
+            border: none;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 2.25rem 0 0 0;
+        }
+        .sidebar ul li {
+            margin: 1rem 0;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar .menu-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        /* Carousel styles */
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 5rem 0;
+            margin-top: -100px;
+        }
+
+        .carousel-track {
+            display: flex;
+        }
+
+        .carousel-item {
+            flex: 0 0 auto;
+            margin: 0 1rem;
+            text-align: center;
+        }
+
+        .carousel-item img {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+    <script>
+        let configData = null;
+
+        // Load config.json
+        async function loadConfig() {
+            if (!configData) {
+                const response = await fetch('config.json');
+                configData = await response.json();
+
+                const apiKey = configData.youtube_api_key;
+                const channelId = configData.youtube_channel_id;
+
+                if (apiKey && channelId) {
+                    const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
+                    const videoResponse = await fetch(apiUrl);
+                    const videoData = await videoResponse.json();
+
+                    if (videoData.items.length > 0) {
+                        configData.youtube_live_video_id = videoData.items[0].id.videoId;
+                    }
+                }
+
+                if (configData.twitch_channel) {
+                    document.querySelector('.twitch-btn').style.display = 'block';
+                }
+                if (configData.kick_live_id) {
+                    document.querySelector('.kick-btn').style.display = 'block';
+                }
+                if (configData.youtube_channel_id) {
+                    document.querySelector('.youtube-btn').style.display = 'block';
+                }
+            }
+            return configData;
+        }
+
+        // Load menu.json
+        async function loadMenu() {
+            if (!menuData) {
+                const response = await fetch('menu.json');
+                menuData = await response.json();
+            }
+
+            const menuList = document.getElementById('menu-list');
+            menuList.innerHTML = '';
+            menuData.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = item.url;
+                a.textContent = item.name;
+                li.appendChild(a);
+                menuList.appendChild(li);
+            });
+        }
+
+        // Load merchandise JSON and populate the carousel
+        async function loadMerch() {
+            const config = await loadConfig();
+            const response = await fetch('merch.json');
+            const merchData = await response.json();
+            const carouselTrack = document.querySelector('.carousel-track');
+
+            // Clear existing items in the carousel (optional, for repeated calls)
+            carouselTrack.innerHTML = '';
+
+            // Prepend a "Tip Jar" item if streamelements_id is available
+            if (config.streamelements_id) {
+                const tipJar = document.createElement('div');
+                tipJar.classList.add('carousel-item');
+                tipJar.innerHTML = `
+                    <a href="https://streamelements.com/${config.streamelements_id}/tip" target="_blank">
+                        <img src="https://media.influencerupdate.biz/2018/4/88369/streamelements-r225x.png" alt="Tip Jar">
+                        <p>Tip Jar</p>
+                        <p></p>
+                    </a>
+                `;
+                carouselTrack.appendChild(tipJar);
+            }
+
+            // Append merchandise items twice for looping effect
+            for (let i = 0; i < 2; i++) {
+                merchData.forEach(item => {
+                    const merchItem = document.createElement('div');
+                    merchItem.classList.add('carousel-item');
+                    merchItem.innerHTML = `
+                        <a href="${item.link}" target="_blank">
+                            <img src="${item.image}" alt="${item.product_name}">
+                            <p>${item.product_name}</p>
+                            <p>${item.price}</p>
+                        </a>
+                    `;
+                    carouselTrack.appendChild(merchItem);
+                });
+            }
+
+            // Calculate the total number of items
+            const totalItems = merchData.length + 1;  // Add 1 for the Tip Jar
+
+            // If there are less than 9 items, don't animate
+            if (totalItems >= 9) {
+                // Calculate the total width of all items and set animation duration accordingly
+                const itemWidth = 150 + 32;  // Assuming each item has 150px width + 32px margin
+                const totalWidth = totalItems * itemWidth;
+                const scrollDuration = (totalWidth / 100) * 1.5;  // Speed up by 1.5x
+
+                // Set dynamic animation duration
+                carouselTrack.style.animation = `scroll ${scrollDuration}s linear infinite`;
+            }
+        }
+
+        async function loadStream(service) {
+            const config = await loadConfig();
+
+            const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
+            const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
+
+            const iframe = document.getElementById('live-stream');
+
+            if (service === 'youtube') {
+                iframe.src = youtubeEmbed;
+            } else if (service === 'twitch') {
+                iframe.src = twitchEmbed;
+            }
+
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('allow', 'fullscreen');
+        }
+
+        async function loadChat() {
+            const config = await loadConfig();
+
+            document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}&darkpopout`;
+            document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        window.onload = async function() {
+            await loadStream('youtube');
+            await loadChat();
+            switchTab('youtube-chat');
+            await loadMenu();  // Load the sidebar menu
+            await loadMerch();  // Load merchandise carousel
+        }
+
+        // Pause scrolling on mouseover, resume on mouseout
+        document.addEventListener('DOMContentLoaded', () => {
+            const carouselTrack = document.querySelector('.carousel-track');
+
+            carouselTrack.addEventListener('mouseover', () => {
+                carouselTrack.style.animationPlayState = 'paused';
+            });
+
+            carouselTrack.addEventListener('mouseout', () => {
+                carouselTrack.style.animationPlayState = 'running';
+            });
+        });
+    </script>
+</head>
+<body>
+    <main class="main-container">
+        <div class="stream-container">
+            <div class="stream-buttons">
+                <button class="menu-button" onclick="toggleSidebar()">
+                    <img src="../menu.png" alt="Menu">
+                </button>
+                <button class="youtube-btn" style="display:none" onclick="loadStream('youtube')">YouTube</button>
+                <button class="twitch-btn" style="display:none" onclick="loadStream('twitch')">Twitch</button>
+                <button class="kick-btn" style="display:none" onclick="loadStream('kick')">Kick</button>
+            </div>
+            <iframe id="live-stream" src="" allowfullscreen allow="fullscreen"></iframe>
+        </div>
+        <div class="chat-container">
+            <div class="tabs">
+                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
+            </div>
+            <div id="youtube-chat" class="tab-content active">
+                <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
+            </div>
+            <div id="twitch-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <!-- Merchandise Carousel -->
+    <div class="carousel-container">
+        <div class="carousel-track"></div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <button class="menu-button" onclick="toggleSidebar()">
+            <img src="menu.png" alt="Menu">
+        </button>
+        <ul id="menu-list"></ul>
+    </div>
+</body>
+</html>
