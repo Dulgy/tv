@@ -32,12 +32,14 @@
 			padding-bottom: 0;
             display: flex;
             justify-content: space-between; 
-            flex: 1;
+            height: 100vh; /* Ensures it uses full viewport height */
         }
         .stream-container {
             flex: 3.15; /* sets horizontal length dont change */
-            display: flex-start;
+            display: flex;
+			height: calc(100vh - 20rem); /* Adjust height based on your carousel */
             flex-direction: column;
+			justify-content: flex-start;
             margin-top: 0;
             padding-top: 0;
         }
@@ -170,7 +172,9 @@
             /* background-color: #f8f9fa; */
 			margin: 0;
             padding: 0 rem 0; /* Decrease padding to reduce gap */
-            margin-top: 0px;  /* Bring the carousel closer to the page */
+            flex-shrink: 0; /* Prevents shrinking of the carousel when zooming */
+			margin-top: 0.5rem; /* Controls the consistent gap */
+
         }
 
         .carousel-track {
