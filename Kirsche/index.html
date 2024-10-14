@@ -293,7 +293,7 @@
 
                 // Set dynamic animation duration
                 carouselTrack.style.animation = `scroll ${scrollDuration}s linear infinite`;
- 
+				});
         }
 
         async function loadStream(service) {
@@ -339,19 +339,6 @@
             await loadMenu();
             await loadMerch();  // Load merchandise carousel
         }
-        // Pause scrolling on mouseover, resume on mouseout
-        document.addEventListener('DOMContentLoaded', () => {
-            const carouselTrack = document.querySelector('.carousel-track');
-
-            carouselTrack.addEventListener('mouseover', () => {
-                carouselTrack.style.animationPlayState = 'paused';
-            });
-
-            carouselTrack.addEventListener('mouseout', () => {
-                carouselTrack.style.animationPlayState = 'running';
-            });
-        });
-		
     </script>
 </head>
 <body>
