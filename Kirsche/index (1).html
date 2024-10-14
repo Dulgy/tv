@@ -289,7 +289,7 @@
                 // Calculate the total width of all items and set animation duration accordingly
                 const itemWidth = 150 + 32;  // Assuming each item has 150px width + 32px margin
                 const totalWidth = totalItems * itemWidth;
-                const scrollDuration = (totalWidth / 100) * 1.5;  // Speed up by 1.5x
+                const scrollDuration = (totalWidth / 100) * 1.5;  // Speed up by 2.5x
 
                 // Set dynamic animation duration
                 carouselTrack.style.animation = `scroll ${scrollDuration}s linear infinite`;
@@ -336,7 +336,7 @@
             await loadStream('youtube');
             await loadChat();
             switchTab('youtube-chat');
-            await loadMenu();  // Load the sidebar menu
+			await loadMenu();
             await loadMerch();  // Load merchandise carousel
         }
 
