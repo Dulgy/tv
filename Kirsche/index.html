@@ -175,17 +175,18 @@
         .carousel-track {
             margin-top: 0;
 			display: flex;
+			justify-content: space-between; /* Ensures items are evenly spaced */
             animation: scroll 22s linear infinite; 
         }
 
         .carousel-item {
-            flex: 0 0 auto;
+            flex: 0 0 calc(100%/ 8); /* Adjust width to fit 8 items */
             margin: 0 1rem;
             text-align: center;
         }
 
         .carousel-item img {
-            max-width: 150px;
+            max-width: 100px;
             height: auto;
             display: block;
             margin: 0 auto;
