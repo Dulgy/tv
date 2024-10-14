@@ -217,7 +217,29 @@
 </head>
 <body>
     <main class="main-container">
-        <!-- Stream and chat content as before -->
+        <div class="stream-container">
+            <div class="stream-buttons">
+                <button class="menu-button" onclick="toggleSidebar()">
+                    <img src="../menu.png" alt="Menu">
+                </button>
+                <button class="youtube-btn" style="display:none" onclick="loadStream('youtube')">YouTube</button>
+                <button class="twitch-btn" style="display:none" onclick="loadStream('twitch')">Twitch</button>
+                <button class="kick-btn" style="display:none" onclick="loadStream('kick')">Kick</button>
+            </div>
+            <iframe id="live-stream" src="" allowfullscreen allow="fullscreen"></iframe>
+        </div>
+        <div class="chat-container">
+            <div class="tabs">
+                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
+                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
+            </div>
+            <div id="youtube-chat" class="tab-content active">
+                <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
+            </div>
+            <div id="twitch-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
+            </div>
+        </div>
     </main>
 
     <!-- Merchandise Carousel -->
