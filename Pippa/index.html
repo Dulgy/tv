@@ -318,7 +318,7 @@
             const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
             const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
             const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
-            const kickEmbed = `https://kick.com/${config.kick_live_id}/embed`;
+            const kickEmbed = `https://player.kick.com/${config.kick_live_id};
 
             const iframe = document.getElementById('live-stream');
 
@@ -400,7 +400,7 @@
                 <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
                 <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
                 <button class="rumble-btn" onclick="switchTab('rumble-chat')"><img src="../Rumble.png" alt="Rumble Chat"></button>
-				<button class="kick-btn" onclick="switchTab('kick-chat')"><img src="Kick.png" alt="Kick Chat"></button>
+				<button class="kick-btn" onclick="switchTab('kick-chat')"><img src="../Kick.png" alt="Kick Chat"></button>
             </div>
             <div id="youtube-chat" class="tab-content active">
                 <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
