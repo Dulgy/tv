@@ -75,7 +75,8 @@
         }
         .stream-buttons .youtube-btn,
         .stream-buttons .twitch-btn,
-        .stream-buttons .kick-btn {
+        .stream-buttons .kick-btn,
+		.stream-buttons .rumble-btn {
             flex: 1;
             padding: 0.5rem;
             margin: 0 0.25rem;
@@ -90,6 +91,9 @@
         .stream-buttons .kick-btn {
             background-color: #32CD32;
         }
+        .stream-buttons .rumble-btn {
+            background-color: lightgreen;
+		}
         .tabs {
             display: flex;
             justify-content: center;
@@ -303,6 +307,8 @@
 
             const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
             const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
+            const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
+            const kickEmbed = `https://kick.com/${config.kick_live_id}/embed`;
 
             const iframe = document.getElementById('live-stream');
 
@@ -310,6 +316,10 @@
                 iframe.src = youtubeEmbed;
             } else if (service === 'twitch') {
                 iframe.src = twitchEmbed;
+            } else if (service === 'rumble') {
+                iframe.src = rumbleEmbed;
+            } else if (service === 'kick') {
+                iframe.src = kickEmbed;
             }
 
             iframe.setAttribute('allowfullscreen', 'true');
@@ -321,6 +331,8 @@
 
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}&darkpopout`;
             document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
+            document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
+
         }
 
         function switchTab(tabId) {
@@ -366,6 +378,7 @@
                 </button>
                 <button class="youtube-btn" style="display:none" onclick="loadStream('youtube')">YouTube</button>
                 <button class="twitch-btn" style="display:none" onclick="loadStream('twitch')">Twitch</button>
+                <button class="rumble-btn" style="display:none" onclick="loadStream('rumble')">Rumble</button>
                 <button class="kick-btn" style="display:none" onclick="loadStream('kick')">Kick</button>
             </div>
             <iframe id="live-stream" src="" allowfullscreen allow="fullscreen"></iframe>
@@ -380,6 +393,9 @@
             </div>
             <div id="twitch-chat" class="tab-content">
                 <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
+            </div>
+            <div id="rumble-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
             </div>
         </div>
     </main>
