@@ -3,5 +3,6 @@
 	"youtube_api_key": "AIzaSyDWA5ktLdT1wfRBjXZ0xTvYih2BbMXmmlQ",
 	"streamelements_id": "kirsche",
     "twitch_channel": "Kirsche",
-	"twitch_clientID": "66yuv2abae33nldixyuwykp9dn4b22"
+	"twitch_clientID": "66yuv2abae33nldixyuwykp9dn4b22",
+	"kick_live_id": "Kirsche"
 }
