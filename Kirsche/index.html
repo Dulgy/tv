@@ -308,6 +308,14 @@
 					`;
 					carouselTrack.appendChild(merchItem);
 				});
+				
+			    const totalItems = carouselTrack.children.length;
+				if (totalItems < 13) {
+					carouselTrack.style.animationPlayState = 'paused';
+				} else {
+					carouselTrack.style.animationPlayState = 'running';
+				}
+
 			}
         }
 
