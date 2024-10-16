@@ -240,15 +240,19 @@
                 }
                 if (configData.youtube_channel_id) {
                     document.querySelector('.youtube-btn').style.display = 'block';
+					document.querySelector('.youtube-chat-btn').style.display = 'block';
                 }
                 if (configData.twitch_channel) {
                     document.querySelector('.twitch-btn').style.display = 'block';
+					document.querySelector('.twitch-chat-btn').style.display = 'block';
                 }
 				if (configData.rumble_live_id) { 
 					document.querySelector('.rumble-btn').style.display = 'block';
+					document.querySelector('.rumble-chat-btn').style.display = 'block';
 				}
                 if (configData.kick_live_id) {
                     document.querySelector('.kick-btn').style.display = 'block';
+					document.querySelector('.kick-chat-btn').style.display = 'block';
                 }
             }
             return configData;
