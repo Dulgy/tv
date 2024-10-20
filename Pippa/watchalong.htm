@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Watchalong Stream</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 120%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            margin-top: 0;
+        }
+        main {
+            margin-top: 0;
+            margin: 0;
+            margin-bottom: -10;
+            padding: 0;
+        }
+        .main-container {
+            padding-top: 0;
+            margin: 0;
+            margin-bottom: 0;
+            padding: 0;
+            padding-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            height: 100vh;
+        }
+        .stream-container {
+            flex: 3.15;
+            display: flex-start;
+            flex-direction: column;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        .chat-container {
+            flex: 0.85;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            margin-top: 0;
+            padding-top: 0;
+        }
+        .stream-buttons {
+            margin-top: 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+        .menu-button {
+            background: 1px solid lightgrey;
+            color: white;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            margin-top: 0;
+            margin-right: 0.5rem;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-button img {
+            width: 100%;
+            height: 100%;
+        }
+        .stream-buttons .kick-btn {
+            flex: 1;
+            padding: 0.5rem;
+            margin: 0 0.25rem;
+            background-color: black;
+            color: white;
+        }
+        .stream-btn {
+            flex: 1;
+            padding: 0.5rem;
+            margin: 0 0.25rem;
+            background-color: #32CD32;
+            color: white;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        .tabs button {
+            padding: 0.5rem;
+            margin: 0 0.25rem;
+            color: white;
+        }
+        .tabs .youtube-chat-btn {
+            background-color: red;
+        }
+        .tabs .twitch-chat-btn {
+            background-color: #9146FF;
+        }
+        .tabs .kick-chat-btn {
+            background-color: black;
+        }
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        .tab-content.active {
+            display: block;
+            height: 100%;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 4rem);
+            border: none;
+            margin-bottom: 0;
+        }
+        .chat-iframe {
+            width: 100%;
+            height: calc(100vh - 4rem);
+            border: none;
+            margin-bottom: 0;
+        }
+    </style>
+    <script>
+        let configData = null;
+
+        async function loadConfig() {
+            if (!configData) {
+                const response = await fetch('config.json');
+                configData = await response.json();
+
+                const apiKey = configData.youtube_api_key;
+                const channelId = configData.youtube_channel_id;
+
+                if (apiKey && channelId) {
+                    const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`;
+                    const videoResponse = await fetch(apiUrl);
+                    const videoData = await videoResponse.json();
+
+                    if (videoData.items.length > 0) {
+                        configData.youtube_live_video_id = videoData.items[0].id.videoId;
+                    }
+                }
+            }
+            return configData;
+        }
+
+        function loadCustomVideo() {
+            const filePath = document.getElementById('custom-file').value;
+            const allowedExtensions = ['mp4', 'mkv', 'avi'];
+            const fileExtension = filePath.split('.').pop().toLowerCase();
+
+            if (allowedExtensions.includes(fileExtension)) {
+                const videoIframe = document.getElementById('live-stream');
+                videoIframe.src = filePath;
+                videoIframe.setAttribute('allow', 'fullscreen');
+            } else {
+                alert('Please enter a valid file path (e.g., .mp4, .mkv, .avi).');
+            }
+        }
+
+        async function loadStream(service) {
+            const config = await loadConfig();
+
+            let youtubeEmbed;
+            if (service === 'youtube') {
+                const isShorts = config.is_youtube_shorts;
+                youtubeEmbed = isShorts
+                    ? `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1&loop=1&playlist=${config.youtube_live_video_id}`
+                    : `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
+            }
+
+            const iframe = document.getElementById('live-stream');
+            iframe.src = youtubeEmbed;
+            iframe.setAttribute('allowfullscreen', 'true');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        window.onload = async function() {
+            await loadStream('youtube');
+            switchTab('youtube-chat');
+        }
+    </script>
+</head>
+<body>
+    <main class="main-container">
+        <div class="stream-container">
+            <div class="stream-buttons">
+                <button class="menu-button" onclick="toggleSidebar()">
+                    <img src="../menu.png" alt="Menu">
+                </button>
+                <button class="kick-btn" onclick="loadStream('kick')">Kick</button>
+                
+                <!-- Custom File Input for Video -->
+                <label for="custom-file" style="margin-left: 1rem;">Custom file location:</label>
+                <input type="text" id="custom-file" placeholder="Enter file path (e.g., .mp4, .mkv)">
+                <button class="stream-btn" onclick="loadCustomVideo()">Go</button>
+            </div>
+            <iframe id="live-stream" src="" allowfullscreen allow="fullscreen"></iframe>
+        </div>
+        <div class="chat-container">
+            <div class="tabs">
+                <button class="youtube-chat-btn" onclick="switchTab('youtube-chat')">YouTube Chat</button>
+                <button class="twitch-chat-btn" onclick="switchTab('twitch-chat')">Twitch Chat</button>
+            </div>
+            <div id="youtube-chat" class="tab-content active">
+                <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
+            </div>
+            <div id="twitch-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
