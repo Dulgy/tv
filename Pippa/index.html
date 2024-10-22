@@ -353,7 +353,7 @@
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}&darkpopout`;
             document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
-			document.getElementById('kick-chat-iframe').src = `https://kick.com/${config.kick_live_id}/chat`;
+			document.getElementById('kick-chat-iframe').src = `https://kick.com/poppout/${config.kick_live_id}/chat`;
         }
 
         function switchTab(tabId) {
