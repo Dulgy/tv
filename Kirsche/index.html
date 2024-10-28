@@ -447,7 +447,7 @@
 				}
 				const threeMonthsAgo = new Date(today.setMonth(thisMonth - 3)).toISOString();
 
-				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=30&order=relevance&publishedAfter=${threeMonthsAgo}`;
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=30&publishedAfter=${threeMonthsAgo}`;
 
 
 				const response = await fetch(apiUrl);
