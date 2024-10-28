@@ -367,7 +367,7 @@
                 iframe.src = rumbleEmbed;
             } else if (service === 'kick') {
                 iframe.src = kickEmbed;
-            } 
+            } else iframe.src = service;
 
             iframe.setAttribute('allowfullscreen', 'true');
             iframe.setAttribute('allow', 'fullscreen');
@@ -397,7 +397,7 @@
 					const videoElement = document.createElement('div');
 					videoElement.classList.add('video-item');
 					videoElement.innerHTML = `
-						<a href="https://www.youtube.com/watch?v=${video.id.videoId}" target="_blank">
+						<a href="#" onclick="loadStream('https://www.youtube.com/embed/${video.id.videoId}?autoplay=1')">
 							<img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
 							<p>${video.snippet.title}</p>
 						</a>
