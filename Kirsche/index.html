@@ -440,7 +440,12 @@
 			const channelIdToExclude = config.youtube_channel_id;
 
 			if (apiKey && creatorName) {
-				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=30&order=relevance`;
+				const today = new Date();
+				const twoMonthsAgo = new Date(today.setMonth(today.getMonth() - 2)).toISOString();
+
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=30&order=relevance&publishedAfter=${twoMonthsAgo}`;
+
+
 				const response = await fetch(apiUrl);
 				const data = await response.json();
 
