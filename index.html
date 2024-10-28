@@ -9,7 +9,6 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 120%;
         }
         body {
             display: flex;
@@ -21,15 +20,18 @@
         main {
             margin-top: 0;
 			margin: 0;
+			margin-bottom: -10;
 			padding: 0;
         }
         .main-container {
             padding-top: 0;
 			margin: 0;
+			margin-bottom: 0;
 			padding: 0;
+			padding-bottom: 0;
             display: flex;
-            justify-content: space-between;
-            flex: 1;
+            justify-content: space-between; 
+            height: 100vh; /* Ensures it uses full viewport height */
         }
         .stream-container {
             flex: 3.15; /* sets horizontal length dont change */
@@ -72,7 +74,8 @@
         }
         .stream-buttons .youtube-btn,
         .stream-buttons .twitch-btn,
-        .stream-buttons .kick-btn {
+        .stream-buttons .kick-btn,
+		.stream-buttons .rumble-btn {
             flex: 1;
             padding: 0.5rem;
             margin: 0 0.25rem;
@@ -85,8 +88,11 @@
             background-color: #9146FF;
         }
         .stream-buttons .kick-btn {
-            background-color: #32CD32;
+            background-color: black;
         }
+        .stream-buttons .rumble-btn {
+            background-color: #32CD32;
+		}
         .tabs {
             display: flex;
             justify-content: center;
@@ -97,12 +103,19 @@
             margin: 0 0.25rem;
             color: white;
         }
-        .tabs .youtube-btn {
+        .tabs .youtube-chat-btn {
             background-color: red;
         }
-        .tabs .twitch-btn {
+        .tabs .twitch-chat-btn {
             background-color: #9146FF;
         }
+        .tabs .kick-chat-btn {
+            background-color: black;
+        }
+        .tabs .rumble-chat-btn {
+            background-color: #32CD32;
+		}
+
         .tabs img {
             height: 20px;
             width: 20px;
@@ -119,11 +132,13 @@
             width: 100%;
             height: calc(100vh - 4rem);
             border: none;
+			margin-bottom: 0;
         }
         .chat-iframe {
             width: 100%;
             height: calc(100vh - 4rem);
             border: none;
+			margin-bottom: 0;
         }
         .sidebar {
             position: fixed;
@@ -161,19 +176,25 @@
         .carousel-container {
             width: 100%;
             overflow: hidden;
+			align: top;
             /* background-color: #f8f9fa; */
 			margin: 0;
             padding: 0 rem 0; /* Decrease padding to reduce gap */
-            margin-top: 0px;  /* Bring the carousel closer to the page */
+            flex-shrink: 0; /* Prevents shrinking of the carousel when zooming */
+			margin-top: 0.5rem; /* Controls the consistent gap */
+
         }
 
         .carousel-track {
-            display: flex;
+            margin-top: 0;
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between; /* Ensures items are evenly spaced */
             animation: scroll 22s linear infinite; 
         }
 
         .carousel-item {
-            flex: 0 0 auto;
+            flex: 0 0 calc(100%/ 8); /* Adjust width to fit 8 items */
             margin: 0 1rem;
             text-align: center;
         }
@@ -193,6 +214,59 @@
                 transform: translateX(-100%);
             }
         }
+		.recent-videos-container {
+			padding: 1rem;
+		}
+
+		.recent-videos-container h2 {
+			text-align: center;
+			color: white;
+		}
+
+		#recent-videos {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			justify-content: center;
+		}
+
+		.video-item {
+			flex: 0 0 calc(20% - 1rem);
+			width: 200px;
+			text-align: center;
+		}
+
+		.video-item img {
+			width: 100%;
+			height: auto;
+		}
+		
+		.community-clips-container {
+			padding: 1rem;
+		}
+
+		.community-clips-container h2 {
+			text-align: center;
+			color: white;
+		}
+
+		#community-clips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			justify-content: center;
+		}
+
+		.clip-item {
+			width: 200px;
+			text-align: center;
+		}
+
+		.clip-item img {
+			width: 100%;
+			height: auto;
+		}
+		
     </style>
     <script>
         let configData = null;
@@ -216,15 +290,21 @@
                         configData.youtube_live_video_id = videoData.items[0].id.videoId;
                     }
                 }
-
-                if (configData.twitch_channel) {
-                    document.querySelector('.twitch-btn').style.display = 'block';
-                }
-                if (configData.kick_live_id) {
-                    document.querySelector('.kick-btn').style.display = 'block';
-                }
                 if (configData.youtube_channel_id) {
                     document.querySelector('.youtube-btn').style.display = 'block';
+					document.querySelector('.youtube-chat-btn').style.display = 'block';
+                }
+                if (configData.twitch_channel) {
+                    document.querySelector('.twitch-btn').style.display = 'block';
+					document.querySelector('.twitch-chat-btn').style.display = 'block';
+                }
+				if (configData.rumble_live_id) { 
+					document.querySelector('.rumble-btn').style.display = 'block';
+					document.querySelector('.rumble-chat-btn').style.display = 'block';
+				}
+                if (configData.kick_live_id) {
+                    document.querySelector('.kick-btn').style.display = 'block';
+					document.querySelector('.kick-chat-btn').style.display = 'block';
                 }
             }
             return configData;
@@ -284,6 +364,14 @@
 					`;
 					carouselTrack.appendChild(merchItem);
 				});
+				
+			    const totalItems = carouselTrack.children.length;
+				if (totalItems < 13) {
+					carouselTrack.style.animationPlayState = 'paused';
+				} else {
+					carouselTrack.style.animationPlayState = 'running';
+				}
+
 			}
         }
 
@@ -292,6 +380,8 @@
 
             const youtubeEmbed = `https://www.youtube.com/embed/${config.youtube_live_video_id}?autoplay=1`;
             const twitchEmbed = `https://player.twitch.tv/?channel=${config.twitch_channel}&parent=${window.location.hostname}`;
+            const rumbleEmbed = `https://rumble.com/embed/live/${config.rumble_live_id}`;
+            const kickEmbed = `https://player.kick.com/${config.kick_live_id}`;
 
             const iframe = document.getElementById('live-stream');
 
@@ -299,7 +389,11 @@
                 iframe.src = youtubeEmbed;
             } else if (service === 'twitch') {
                 iframe.src = twitchEmbed;
-            }
+            } else if (service === 'rumble') {
+                iframe.src = rumbleEmbed;
+            } else if (service === 'kick') {
+                iframe.src = kickEmbed;
+            } else iframe.src = service;
 
             iframe.setAttribute('allowfullscreen', 'true');
             iframe.setAttribute('allow', 'fullscreen');
@@ -310,7 +404,74 @@
 
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}&darkpopout`;
             document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
+            document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
+			document.getElementById('kick-chat-iframe').src = `https://kick.com/popout/${config.kick_live_id}/chat`;
         }
+		
+		async function loadRecentVideos() {
+			const config = await loadConfig(); // Make sure to load config first
+			const apiKey = config.youtube_api_key;
+			const channelId = config.youtube_channel_id;
+
+			if (apiKey && channelId) {
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=10`;
+				const response = await fetch(apiUrl);
+				const data = await response.json();
+
+				const recentVideosContainer = document.getElementById('recent-videos');
+				data.items.forEach(video => {
+					const videoElement = document.createElement('div');
+					videoElement.classList.add('video-item');
+					videoElement.innerHTML = `
+						<a href="#" onclick="loadStream('https://www.youtube.com/embed/${video.id.videoId}?autoplay=1')">
+							<img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+							<p>${video.snippet.title}</p>
+						</a>
+					`;
+					recentVideosContainer.appendChild(videoElement);
+				});
+			}
+		}
+
+		async function loadCommunityClips() {
+			const config = await loadConfig();
+			const apiKey = config.youtube_api_key;
+			const creatorName = config.creator_name;
+			const channelIdToExclude = config.youtube_channel_id;
+
+			if (apiKey && creatorName) {
+				const today = new Date();
+				const thisMonth = today.getMonth();
+				if (thisMonth < 4) {
+					thisMonth += 12;
+				}
+				const threeMonthsAgo = new Date(today.setMonth(thisMonth - 3)).toISOString();
+
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=30&publishedAfter=${threeMonthsAgo}`;
+
+
+				const response = await fetch(apiUrl);
+				const data = await response.json();
+
+				const communityClipsContainer = document.getElementById('community-clips');
+				communityClipsContainer.innerHTML = ''; // Clear existing clips, if any
+
+				data.items
+					.filter(video => video.snippet.channelId !== channelIdToExclude) // Exclude creator's channel
+					.forEach(video => {
+						const clipElement = document.createElement('div');
+						clipElement.classList.add('clip-item');
+						clipElement.innerHTML = `
+							<a href="#" onclick="loadStream('https://www.youtube.com/embed/${video.id.videoId}?autoplay=1')">
+								<img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+								<p>${video.snippet.title}</p>
+							</a>
+						`;
+						communityClipsContainer.appendChild(clipElement);
+					});
+			}
+		}
+
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
@@ -326,9 +487,11 @@
         window.onload = async function() {
             await loadStream('youtube');
             await loadChat();
-            switchTab('youtube-chat');
+            switchTab('twitch-chat');
             await loadMenu();
             await loadMerch();  // Load merchandise carousel
+			await loadRecentVideos();
+			await loadCommunityClips();
         }
 
         // Pause scrolling on mouseover, resume on mouseout
@@ -355,14 +518,17 @@
                 </button>
                 <button class="youtube-btn" style="display:none" onclick="loadStream('youtube')">YouTube</button>
                 <button class="twitch-btn" style="display:none" onclick="loadStream('twitch')">Twitch</button>
+                <button class="rumble-btn" style="display:none" onclick="loadStream('rumble')">Rumble</button>
                 <button class="kick-btn" style="display:none" onclick="loadStream('kick')">Kick</button>
             </div>
             <iframe id="live-stream" src="" allowfullscreen allow="fullscreen"></iframe>
         </div>
         <div class="chat-container">
             <div class="tabs">
-                <button class="youtube-btn" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
-                <button class="twitch-btn" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
+                <button class="youtube-chat-btn" style="display:none" onclick="switchTab('youtube-chat')"><img src="../YouTube.png" alt="YouTube Chat"></button>
+                <button class="twitch-chat-btn" style="display:none" onclick="switchTab('twitch-chat')"><img src="../Twitch.png" alt="Twitch Chat"></button>
+                <button class="rumble-chat-btn" style="display:none" onclick="switchTab('rumble-chat')"><img src="../Rumble.png" alt="Rumble Chat"></button>
+				<button class="kick-chat-btn" style="display:none" onclick="switchTab('kick-chat')"><img src="../kick.png" alt="Kick Chat"></button>
             </div>
             <div id="youtube-chat" class="tab-content active">
                 <iframe class="chat-iframe" src="" id="youtube-chat-iframe"></iframe>
@@ -370,6 +536,12 @@
             <div id="twitch-chat" class="tab-content">
                 <iframe class="chat-iframe" src="" id="twitch-chat-iframe"></iframe>
             </div>
+            <div id="rumble-chat" class="tab-content">
+                <iframe class="chat-iframe" src="" id="rumble-chat-iframe"></iframe>
+            </div>
+			<div id="kick-chat" class="tab-content">
+				<iframe class="chat-iframe" src="" id="kick-chat-iframe"></iframe>
+			</div>
         </div>
     </main>
 
@@ -377,6 +549,14 @@
     <div class="carousel-container">
         <div class="carousel-track"></div>
     </div>
+	<div class="recent-videos-container">
+		<h2>Recent Videos</h2>
+		<div id="recent-videos"></div>
+	</div>
+	<div class="community-clips-container">
+		<h2>Community Clips</h2>
+		<div id="community-clips"></div>
+	</div>
 
     <div id="sidebar" class="sidebar">
         <button class="menu-button" onclick="toggleSidebar()">
