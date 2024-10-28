@@ -9,7 +9,6 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 120%;
         }
         body {
             display: flex;
@@ -215,6 +214,59 @@
                 transform: translateX(-100%);
             }
         }
+		.recent-videos-container {
+			padding: 1rem;
+		}
+
+		.recent-videos-container h2 {
+			text-align: center;
+			color: white;
+		}
+
+		#recent-videos {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			justify-content: center;
+		}
+
+		.video-item {
+			flex: 0 0 calc(20% - 1rem);
+			width: 200px;
+			text-align: center;
+		}
+
+		.video-item img {
+			width: 100%;
+			height: auto;
+		}
+		
+		.community-clips-container {
+			padding: 1rem;
+		}
+
+		.community-clips-container h2 {
+			text-align: center;
+			color: white;
+		}
+
+		#community-clips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			justify-content: center;
+		}
+
+		.clip-item {
+			width: 200px;
+			text-align: center;
+		}
+
+		.clip-item img {
+			width: 100%;
+			height: auto;
+		}
+		
     </style>
     <script>
         let configData = null;
@@ -341,7 +393,7 @@
                 iframe.src = rumbleEmbed;
             } else if (service === 'kick') {
                 iframe.src = kickEmbed;
-            } 
+            } else iframe.src = service;
 
             iframe.setAttribute('allowfullscreen', 'true');
             iframe.setAttribute('allow', 'fullscreen');
@@ -355,6 +407,77 @@
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
 			document.getElementById('kick-chat-iframe').src = `https://kick.com/popout/${config.kick_live_id}/chat`;
         }
+		
+		async function loadRecentVideos() {
+			const config = await loadConfig(); // Make sure to load config first
+			const apiKey = config.youtube_api_key;
+			const channelId = config.youtube_channel_id;
+
+			if (apiKey && channelId) {
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=10`;
+				const response = await fetch(apiUrl);
+				const data = await response.json();
+
+				const recentVideosContainer = document.getElementById('recent-videos');
+				data.items.forEach(video => {
+					const videoElement = document.createElement('div');
+					videoElement.classList.add('video-item');
+					videoElement.innerHTML = `
+						<a href="#" onclick="loadStream('https://www.youtube.com/embed/${video.id.videoId}?autoplay=1')">
+							<img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+							<p>${video.snippet.title}</p>
+						</a>
+					`;
+					recentVideosContainer.appendChild(videoElement);
+				});
+			}
+		}
+
+		async function loadCommunityClips() {
+			const config = await loadConfig();
+			const apiKey = config.youtube_api_key;
+			const creatorName = config.creator_name;
+			const channelIdToExclude = config.youtube_channel_id;
+
+			if (apiKey && creatorName) {
+				const today = new Date();
+				let thisMonth = today.getMonth();
+				let thisDay = today.getDate();
+				
+				if (thisDay > 27) {
+					today.setDate(28);
+				}
+				
+				if (thisMonth < 4) {
+					thisMonth += 12;
+				}
+				const threeMonthsAgo = new Date(today.setMonth(thisMonth - 3)).toISOString();
+
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=30&publishedAfter=${threeMonthsAgo}`;
+
+
+				const response = await fetch(apiUrl);
+				const data = await response.json();
+
+				const communityClipsContainer = document.getElementById('community-clips');
+				communityClipsContainer.innerHTML = ''; // Clear existing clips, if any
+
+				data.items
+					.filter(video => video.snippet.channelId !== channelIdToExclude) // Exclude creator's channel
+					.forEach(video => {
+						const clipElement = document.createElement('div');
+						clipElement.classList.add('clip-item');
+						clipElement.innerHTML = `
+							<a href="#" onclick="loadStream('https://www.youtube.com/embed/${video.id.videoId}?autoplay=1')">
+								<img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+								<p>${video.snippet.title}</p>
+							</a>
+						`;
+						communityClipsContainer.appendChild(clipElement);
+					});
+			}
+		}
+
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
@@ -373,6 +496,8 @@
             switchTab('twitch-chat');
             await loadMenu();
             await loadMerch();  // Load merchandise carousel
+			await loadRecentVideos();
+			await loadCommunityClips();
         }
 
         // Pause scrolling on mouseover, resume on mouseout
@@ -430,6 +555,14 @@
     <div class="carousel-container">
         <div class="carousel-track"></div>
     </div>
+	<div class="recent-videos-container">
+		<h2>Recent Videos</h2>
+		<div id="recent-videos"></div>
+	</div>
+	<div class="community-clips-container">
+		<h2>Community Clips</h2>
+		<div id="community-clips"></div>
+	</div>
 
     <div id="sidebar" class="sidebar">
         <button class="menu-button" onclick="toggleSidebar()">
