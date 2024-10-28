@@ -9,7 +9,6 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 120%;
         }
         body {
             display: flex;
@@ -215,6 +214,33 @@
                 transform: translateX(-100%);
             }
         }
+		.recent-videos-container {
+			padding: 1rem;
+			background-color: #f8f9fa;
+		}
+
+		.recent-videos-container h2 {
+			text-align: center;
+			color: #333;
+		}
+
+		#recent-videos {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			justify-content: center;
+		}
+
+		.video-item {
+			width: 200px;
+			text-align: center;
+		}
+
+		.video-item img {
+			width: 100%;
+			height: auto;
+		}
+		
     </style>
     <script>
         let configData = null;
@@ -353,8 +379,33 @@
             document.getElementById('twitch-chat-iframe').src = `https://www.twitch.tv/embed/${config.twitch_channel}/chat?parent=${window.location.hostname}&darkpopout`;
             document.getElementById('youtube-chat-iframe').src = `https://www.youtube.com/live_chat?v=${config.youtube_live_video_id}&embed_domain=${window.location.hostname}&origin=${window.location.origin}`;
             document.getElementById('rumble-chat-iframe').src = `https://rumble.com/embed/chat/${config.rumble_chat_id}`;
-			document.getElementById('kick-chat-iframe').src = `https://kick.com/${config.kick_live_id}/chatroom`;
+			document.getElementById('kick-chat-iframe').src = `https://kick.com/popout/${config.kick_live_id}/chat`;
         }
+		
+		async function loadRecentVideos() {
+			const config = await loadConfig(); // Make sure to load config first
+			const apiKey = config.youtube_api_key;
+			const channelId = config.youtube_channel_id;
+
+			if (apiKey && channelId) {
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=10`;
+				const response = await fetch(apiUrl);
+				const data = await response.json();
+
+				const recentVideosContainer = document.getElementById('recent-videos');
+				data.items.forEach(video => {
+					const videoElement = document.createElement('div');
+					videoElement.classList.add('video-item');
+					videoElement.innerHTML = `
+						<a href="https://www.youtube.com/watch?v=${video.id.videoId}" target="_blank">
+							<img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+							<p>${video.snippet.title}</p>
+						</a>
+					`;
+					recentVideosContainer.appendChild(videoElement);
+				});
+			}
+		}
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
@@ -373,6 +424,7 @@
             switchTab('twitch-chat');
             await loadMenu();
             await loadMerch();  // Load merchandise carousel
+			await loadRecentVideos();
         }
 
         // Pause scrolling on mouseover, resume on mouseout
@@ -430,6 +482,10 @@
     <div class="carousel-container">
         <div class="carousel-track"></div>
     </div>
+	<div class="recent-videos-container">
+		<h2>Recent Videos</h2>
+		<div id="recent-videos"></div>
+	</div>
 
     <div id="sidebar" class="sidebar">
         <button class="menu-button" onclick="toggleSidebar()">
