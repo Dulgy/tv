@@ -441,9 +441,13 @@
 
 			if (apiKey && creatorName) {
 				const today = new Date();
-				const twoMonthsAgo = new Date(today.setMonth(today.getMonth() - 2)).toISOString();
+				const thisMonth = today.getMonth();
+				if (thisMonth <= 3) {
+					thisMonth = thisMonth + 12;
+				}
+				const threeMonthsAgo = new Date(today.setMonth(thisMonth - 3)).toISOString();
 
-				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=30&order=relevance&publishedAfter=${twoMonthsAgo}`;
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=30&order=relevance&publishedAfter=${threeMonthsAgo}`;
 
 
 				const response = await fetch(apiUrl);
