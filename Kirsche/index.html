@@ -441,7 +441,13 @@
 
 			if (apiKey && creatorName) {
 				const today = new Date();
-				const thisMonth = today.getMonth();
+				let thisMonth = today.getMonth();
+				let thisDay = today.getDate();
+				
+				if (thisDay > 27) {
+					today.setDate(28);
+				}
+				
 				if (thisMonth < 4) {
 					thisMonth += 12;
 				}
