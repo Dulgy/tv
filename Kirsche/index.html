@@ -442,8 +442,8 @@
 			if (apiKey && creatorName) {
 				const today = new Date();
 				const thisMonth = today.getMonth();
-				if (thisMonth <= 3) {
-					thisMonth = thisMonth + 12;
+				if (thisMonth < 4) {
+					thisMonth += 12;
 				}
 				const threeMonthsAgo = new Date(today.setMonth(thisMonth - 3)).toISOString();
 
