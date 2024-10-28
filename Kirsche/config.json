@@ -1,8 +1,10 @@
 {
     "youtube_channel_id": "UC3N8ceQAY0F_kJG0aJNttLg",
+	"creator_name": "Kirsche Verstahl",
 	"youtube_api_key": "AIzaSyDWA5ktLdT1wfRBjXZ0xTvYih2BbMXmmlQ",
 	"streamelements_id": "kirsche",
     "twitch_channel": "Kirsche",
 	"twitch_clientID": "66yuv2abae33nldixyuwykp9dn4b22",
+	"watchalong": "",
 	"kick_live_id": ""
 }
