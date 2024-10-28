@@ -241,6 +241,32 @@
 			height: auto;
 		}
 		
+		.community-clips-container {
+			padding: 1rem;
+		}
+
+		.community-clips-container h2 {
+			text-align: center;
+			color: white;
+		}
+
+		#community-clips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			justify-content: center;
+		}
+
+		.clip-item {
+			width: 200px;
+			text-align: center;
+		}
+
+		.clip-item img {
+			width: 100%;
+			height: auto;
+		}
+		
     </style>
     <script>
         let configData = null;
@@ -407,6 +433,37 @@
 			}
 		}
 
+		async function loadCommunityClips() {
+			const config = await loadConfig();
+			const apiKey = config.youtube_api_key;
+			const creatorName = config.creator_name;
+			const channelIdToExclude = config.youtube_channel_id;
+
+			if (apiKey && creatorName) {
+				const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(creatorName)}&part=snippet&type=video&maxResults=20&order=relevance`;
+				const response = await fetch(apiUrl);
+				const data = await response.json();
+
+				const communityClipsContainer = document.getElementById('community-clips');
+				communityClipsContainer.innerHTML = ''; // Clear existing clips, if any
+
+				data.items
+					.filter(video => video.snippet.channelId !== channelIdToExclude) // Exclude creator's channel
+					.forEach(video => {
+						const clipElement = document.createElement('div');
+						clipElement.classList.add('clip-item');
+						clipElement.innerHTML = `
+							<a href="#" onclick="loadStream('https://www.youtube.com/embed/${video.id.videoId}?autoplay=1')">
+								<img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+								<p>${video.snippet.title}</p>
+							</a>
+						`;
+						communityClipsContainer.appendChild(clipElement);
+					});
+			}
+		}
+
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
@@ -425,6 +482,7 @@
             await loadMenu();
             await loadMerch();  // Load merchandise carousel
 			await loadRecentVideos();
+			await loadCommunityClips();
         }
 
         // Pause scrolling on mouseover, resume on mouseout
@@ -485,6 +543,10 @@
 	<div class="recent-videos-container">
 		<h2>Recent Videos</h2>
 		<div id="recent-videos"></div>
+	</div>
+	<div class="community-clips-container">
+		<h2>Community Clips</h2>
+		<div id="community-clips"></div>
 	</div>
 
     <div id="sidebar" class="sidebar">
