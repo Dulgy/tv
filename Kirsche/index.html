@@ -190,7 +190,7 @@
 			display: flex;
 			align-items: flex-start;
 			justify-content: space-between; /* Ensures items are evenly spaced */
-            animation: scroll 30s linear infinite; 
+            animation: scroll linear infinite; 
         }
 
         .carousel-item {
@@ -211,7 +211,7 @@
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(-100%);
+                transform: translateX(-50%);
             }
         }
 		.recent-videos-container {
@@ -369,8 +369,16 @@
 				
 			    const totalItems = carouselTrack.children.length;
 				if (totalItems < 13) {
+					const items = carouselTrack.querySelectorAll('.carousel-item');
+					const baseSpeed = 1; // seconds per item, adjust as needed
+					const duration = (baseSpeed * items.length) -2;
+					carouselTrack.style.animationDuration = `${duration}s`;
 					carouselTrack.style.animationPlayState = 'paused';
 				} else {
+					const items = carouselTrack.querySelectorAll('.carousel-item');
+					const baseSpeed = 1; // seconds per item, adjust as needed
+					const duration = (baseSpeed * items.length) -2;
+					carouselTrack.style.animationDuration = `${duration}s`;
 					carouselTrack.style.animationPlayState = 'running';
 				}
 
