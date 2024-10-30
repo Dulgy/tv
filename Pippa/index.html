@@ -211,7 +211,7 @@
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(-100%);
+                transform: translateX(-50%);
             }
         }
 		.recent-videos-container {
@@ -336,7 +336,9 @@
             const merchData = await response.json();
 
             const carouselTrack = document.querySelector('.carousel-track');
-			for (let i = 0; i < 2; i++) {
+			
+			
+			for (let i = 0; i < 4; i++) {
 				// Prepend a "Tip Jar" item if streamelements_id is available
 				if (config.streamelements_id) {
 					const tipJar = document.createElement('div');
