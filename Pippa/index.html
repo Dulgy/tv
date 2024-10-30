@@ -371,13 +371,13 @@
 				if (totalItems < 13) {
 					const items = carouselTrack.querySelectorAll('.carousel-item');
 					const baseSpeed = 1; // seconds per item, adjust as needed
-					const duration = (baseSpeed * items.length) -1;
+					const duration = (baseSpeed * items.length) -2;
 					carouselTrack.style.animationDuration = `${duration}s`;
 					carouselTrack.style.animationPlayState = 'paused';
 				} else {
 					const items = carouselTrack.querySelectorAll('.carousel-item');
 					const baseSpeed = 1; // seconds per item, adjust as needed
-					const duration = (baseSpeed * items.length) -1;
+					const duration = (baseSpeed * items.length) -2;
 					carouselTrack.style.animationDuration = `${duration}s`;
 					carouselTrack.style.animationPlayState = 'running';
 				}
