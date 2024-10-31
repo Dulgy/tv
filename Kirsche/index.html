@@ -377,7 +377,7 @@
 				} else {
 					const items = carouselTrack.querySelectorAll('.carousel-item');
 					const baseSpeed = 0.25; // seconds per item, adjust as needed
-					const duration = (baseSpeed * items.length) + 1.25;
+					const duration = ((baseSpeed * 2) * items.length) + 1.25;
 					carouselTrack.style.animationDuration = `${duration}s`;
 					carouselTrack.style.animationPlayState = 'running';
 				}
