@@ -1,0 +1,11 @@
+{
+    "Comment_Not_Used": "make fields blank that you don't use. For instructions on API Key: https://rapidapi.com/blog/how-to-get-youtube-api-key/ and for YT channel ID go to channel page open page source > find(ctrl+f) then type m/channel and get the code after the / ",
+	"creator_name": "Kaneko Lumi",
+	"streamelements_id": "kanekolumi",
+	"youtube_channel_id": "UCx_zwZuGIS4jxO07kFk8G6Q",
+	"youtube_api_key": "AIzaSyDWA5ktLdT1wfRBjXZ0xTvYih2BbMXmmlQ",
+    "twitch_channel": "kanekolumi",
+    "rumble_live_id": "",
+    "rumble_chat_id": "",
+	"kick_live_id": ""
+}

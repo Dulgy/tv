@@ -1,0 +1,11 @@
+{
+    "Comment_Not_Used": "make fields blank that you don't use. For instructions on API Key: https://rapidapi.com/blog/how-to-get-youtube-api-key/ and for YT channel ID go to channel page open page source > find(ctrl+f) then type m/channel and get the code after the / ",
+	"streamelements_id": "chisakaairi-8617",
+	"creator_name": "Chisaka Airi",
+	"youtube_channel_id": "UC5qlAhrec6-0J-K3zmhNPPQ",
+	"youtube_api_key": "AIzaSyDWA5ktLdT1wfRBjXZ0xTvYih2BbMXmmlQ",
+    "twitch_channel": "",
+    "rumble_live_id": "",
+    "rumble_chat_id": "",
+	"kick_live_id": ""
+}
