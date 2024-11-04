@@ -1,14 +1,38 @@
 [
     {
-        "product_name": "Custom Roast Coffee Beans - Pipkin Pippa Inspired \u2013 Phase ...",
-        "price": "N/A",
-        "image": "http://shop.phase-connect.com/cdn/shop/products/PippaCoffee_grande.jpg?v=1655518159",
-        "link": "https://shop.phase-connect.com/products/custom-roast-coffee-beans-pipkin-pippa-inspired"
+        "product_name": "Kaminari Clara Birthday 2024 Dakimakura [Pre-Order] \u2013 Phase ...",
+        "price": "$95.00",
+        "image": "http://shop.phase-connect.com/cdn/shop/files/dakiWIP_grande.png?v=1729506173",
+        "link": "https://shop.phase-connect.com/products/kaminari-clara-birthday-2024-dakimakura-pre-order"
     },
     {
-        "product_name": "Pipkin Pippa Official Model Stand \u2013 Phase Connect Store",
-        "price": "N/A",
-        "image": "http://shop.phase-connect.com/cdn/shop/products/Pippa_Regular_b016e333-fcdd-4441-b9f6-d70243e34bb5_grande.jpg?v=1642771847",
-        "link": "https://shop.phase-connect.com/products/pipkin-pippa-official-model-acrylic-stand-double-sided"
+        "product_name": "Kaminari Clara Birthday 2024 Celebration Acrylic Diorama [Pre ...",
+        "price": "$25.00",
+        "image": "http://shop.phase-connect.com/cdn/shop/files/DIORAMASTTANDEE_grande.png?v=1729506173",
+        "link": "https://shop.phase-connect.com/products/kaminari-clara-birthday-2024-celebration-acrylic-diorama-pre-order"
+    },
+    {
+        "product_name": "Kaminari Clara Birthday 2024 Celebration Bundle [Pre-Order ...",
+        "price": "$150.00",
+        "image": "http://shop.phase-connect.com/cdn/shop/files/BDAYBUNDLE_929d148e-782c-4bc4-b071-1f4050ed18a3_grande.png?v=1729564233",
+        "link": "https://shop.phase-connect.com/products/kaminari-clara-birthday-2024-celebration-bundle-pre-order"
+    },
+    {
+        "product_name": "Kaminari Clara Birthday 2024 Celebration UAP Keychain [Pre-Order ...",
+        "price": "$12.00",
+        "image": "http://shop.phase-connect.com/cdn/shop/files/uapkeychain1_grande.png?v=1729563452",
+        "link": "https://shop.phase-connect.com/products/kaminari-clara-birthday-2024-celebration-uap-keychain-pre-order"
+    },
+    {
+        "product_name": "Clara Kaminari Official Model Standee \u2013 Phase Connect Store",
+        "price": "$15.00",
+        "image": "http://shop.phase-connect.com/cdn/shop/files/Clara_grande.png?v=1706342217",
+        "link": "https://shop.phase-connect.com/products/clara-kaminari-official-model-standee"
+    },
+    {
+        "product_name": "Custom Roast Coffee Beans - Clara Kaminari \u2013 Phase Connect Store",
+        "price": "$35.00",
+        "image": "http://shop.phase-connect.com/cdn/shop/files/claranewcoffee_grande.png?v=1718922852",
+        "link": "https://shop.phase-connect.com/products/custom-roast-coffee-beans-clara-kaminari"
     }
 ]
