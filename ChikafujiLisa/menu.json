@@ -1,51 +1,36 @@
 [
     {
-        "name": "Home",
-        "url": "https://www.sincronisity.com"
+        "name": "Upcoming Events/Schedule",
+        "url": "https://www.youtube.com/@chikafujilisa/community"
     },
     {
-        "name": "Schedule (inc)",
-        "url": "https://www.twitch.tv/Sayu/schedule"
+        "name": "Twitter/X",
+        "url": "https://www.x.com/chikafujilisa"
     },
     {
         "name": "Past Streams",
-        "url": "https://www.youtube.com/@SayuSincronisity/streams"
+        "url": "https://www.youtube.com/@chikafujilisa/streams"
     },
     {
         "name": "Videos",
-        "url": "https://www.youtube.com/@SayuSincronisity/videos"
+        "url": "https://www.youtube.com/@chikafujilisa/videos"
     },
     {
-        "name": "Live",
-        "url": "https://dulgy.github.io/tv/Sayu"
+        "name": "Tik Tok",
+        "url": "https://tiktok.com/@chikafujilisa"
     },
         {
-        "name": "Discord",
-        "url": "https://discord.gg/sincronisity"
+        "name": "Marshmellows",
+        "url": "https://marshmallow-qa.com/chikafujilisa"
     },
     {
-        "name": "Wayu Tax",
-        "url": "https://streamelements.com/sayu-3713/tip"
+        "name": "Tips",
+        "url": "https://streamelements.com/lisachikafuji/tip"
     },
-    {
-        "name": "x",
-        "url": "x"
-    },
+
 	{
-        "name": "x",
-        "url": "x"
-    },
-    {
-        "name": "x",
-        "url": "x"
-    },
-    {
-        "name": "x",
-        "url": "x"
-    },
-    {
-        "name": "x",
-        "url": "x"
+        "name": "Gamersupps -10% Code Sheepy",
+        "url": "https://gamersupps.com/"
     }
 
 ]
