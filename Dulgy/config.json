@@ -1,7 +1,10 @@
 {
-    "Comment_Not_Used": "leave any fields blank that you don't use",
+    "Comment_Not_Used": "make fields blank that you don't use. For instructions on API Key: https://rapidapi.com/blog/how-to-get-youtube-api-key/ and for YT channel ID go to channel page open page source > find(ctrl+f) then type m/channel and get the code after the / ",
+	"creator_name": "Indulgence82",
+	"streamelements_id": "Indulgence82",
 	"youtube_channel_id": "UCmk-2MI1zxYkiFz7w012ZCg",
 	"youtube_api_key": "AIzaSyDWA5ktLdT1wfRBjXZ0xTvYih2BbMXmmlQ",
+	"custom_chat_ccs": "https://socialstream.ninja/dock.html?session=uxfeKivUyr&scale=0.77&alignbottom&autoscroll&notime&noavatar&nobadges&hidecommands&hidenumbers&activelinks&shortlink&compact",
     "twitch_channel": "Indulgence82",
     "rumble_live_id": "Indulgence82",
     "rumble_chat_id": "Indulgence82",

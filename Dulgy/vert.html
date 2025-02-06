@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just Chatting Layout</title>
+    <script>
+        fetch('config.json')
+            .then(response => response.json())
+            .then(config => {
+                document.getElementById('video-frame').src = `https://www.youtube.com/embed/${config.youtube_video_id}`;
+                document.getElementById('chat-frame').src = config.custom_chat_ccs;
+            })
+            .catch(error => console.error('Error loading config:', error));
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: url('background.jpg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 90vw;
+            height: 90vh;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .video-container {
+            flex: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black;
+        }
+        .video-container iframe {
+            width: auto;
+            height: 100%;
+            aspect-ratio: 9 / 16;
+        }
+        .chat-container {
+            flex: 1;
+            background: rgba(20, 20, 20, 0.8);
+        }
+        .chat-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="video-container">
+            <iframe id="video-frame" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="chat-container">
+            <iframe id="chat-frame"></iframe>
+        </div>
+    </div>
+</body>
+</html>
