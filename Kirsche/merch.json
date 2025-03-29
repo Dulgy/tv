@@ -1,86 +1,134 @@
 [
     {
-        "product_name": "Kirsche Vector Hoodie",
-        "price": "$89.00",
-        "image": "http://uwumarket.us/cdn/shop/files/Hoodieback_26cdcfe8-3b22-4579-8a32-7e0d6d79fc1e.jpg?v=1691776680",
-        "link": "https://uwumarket.us/products/kirsche-strapped-hoodie"
+        "product_name": "Kirsche Plush (9in) \u2013 Youtooz Collectibles",
+        "price": "Sold Out",
+        "image": "https://youtooz.com/cdn/shop/files/48454v1h6o.png?v=1731076208",
+        "link": "https://youtooz.com/products/kirsche-plush-9-inch"
     },
     {
-        "product_name": "Kirsche Cube Plushie",
+        "product_name": "Kirsche \u2013 Gamer Supps",
+        "price": "$24.99",
+        "image": "http://gamersupps.gg/cdn/shop/files/url-preview-image.png?v=1736959583",
+        "link": "https://gamersupps.gg/collections/kirsche"
+    },
+    {
+        "product_name": "Kirsche \u2013 UwU Market",
+        "price": "$99.00",
+        "image": "http://uwumarket.us/cdn/shop/collections/kirsche.jpg?v=1690470516",
+        "link": "https://uwumarket.us/collections/kirsche"
+    },
+    {
+        "product_name": "Kirsche Cube Plushie \u2013 UwU Market",
         "price": "$40.00",
         "image": "http://uwumarket.us/cdn/shop/files/image_1_9a5d46c7-0b7a-467e-bb8e-ad6aed9a7ed3.png?v=1699461755",
         "link": "https://uwumarket.us/products/kirsche-cube-plsuhie"
     },
     {
-        "product_name": "Kirsche Wonderland Mousepad",
+        "product_name": "Kirsche Vector Hoodie \u2013 UwU Market",
+        "price": "$89.00",
+        "image": "http://uwumarket.us/cdn/shop/files/Hoodieback_26cdcfe8-3b22-4579-8a32-7e0d6d79fc1e.jpg?v=1691776680",
+        "link": "https://uwumarket.us/products/kirsche-strapped-hoodie"
+    },
+    {
+        "product_name": "Kirsche Wonderland Mousepad \u2013 UwU Market",
         "price": "$19.00",
         "image": "http://uwumarket.us/cdn/shop/files/Small_Mouse_Pad_Mock_Filecopy_cfa667a4-dd15-4614-b17e-2cae2d072115.jpg?v=1690475048",
         "link": "https://uwumarket.us/products/kirsche-wonderland-mousepad"
     },
     {
-        "product_name": "Kirsche Vector T-Shirt",
-        "price": "$35.00",
-        "image": "http://uwumarket.us/cdn/shop/files/T-Shirtfront.jpg?v=1690472940",
-        "link": "https://uwumarket.us/products/kirsche-strapped-t-shirt"
+        "product_name": "Waifu Cups x Kirsche \u2013 Gamer Supps",
+        "price": "$24.99",
+        "image": "http://gamersupps.gg/cdn/shop/files/Shaker_879b9e2c-0dc9-4024-9ab8-2621f97ed291.png?v=1743177523",
+        "link": "https://gamersupps.gg/products/waifu-cups-x-kirsche"
     },
     {
-        "product_name": "Kirsche Cube Rug",
-        "price": "$99.00",
-        "image": "http://uwumarket.us/cdn/shop/files/image_be17830a-0368-4950-92b6-1cea60bdd290.png?v=1699458546",
-        "link": "https://uwumarket.us/products/kirsche-cube-rug"
+        "product_name": "Kirsche Shirt \u2013 Gamer Supps",
+        "price": "$34.99",
+        "image": "http://gamersupps.gg/cdn/shop/files/KirscheBack.png?v=1743177579",
+        "link": "https://gamersupps.gg/products/kirsche-shirt"
     },
     {
-        "product_name": "Kirsche Wonderland Poster",
-        "price": "$19.00",
-        "image": "http://uwumarket.us/cdn/shop/files/Poster_Mock_Filecopy_80c28111-2e90-40ee-bc3d-7798a9ef13d0.jpg?v=1690475588",
-        "link": "https://uwumarket.us/products/kirsche-wonderland-poster"
-    },
-    {
-        "product_name": "Kirsche Cube Throw Blanket",
-        "price": "$55.00",
-        "image": "http://uwumarket.us/cdn/shop/files/kirschemockblanket.png?v=1699473339",
-        "link": "https://uwumarket.us/products/kirsche-wonderland-throw-blanket"
-    },
-    {
-        "product_name": "Kirsche Vector Sweatpants",
-        "price": "$79.00",
-        "image": "http://uwumarket.us/cdn/shop/files/Sweatpants.jpg?v=1690473600",
-        "link": "https://uwumarket.us/products/kirsche-strapped-sweatpants"
-    },
-    {
-        "product_name": "Kirsche Cube XXL Mousepad",
+        "product_name": "Kirsche Cube XXL Mousepad \u2013 UwU Market",
         "price": "$50.00",
         "image": "http://uwumarket.us/cdn/shop/files/XL-Mousepad_mockcopy2.jpg?v=1699473190",
         "link": "https://uwumarket.us/products/kirsche-wonderland-xxl-mousepad"
     },
     {
-        "product_name": "Kirsche Cube Hat",
-        "price": "$32.00",
-        "image": "http://uwumarket.us/cdn/shop/files/Hat-Mock1.1copy_c474bec3-3e29-404f-8e9d-5440dac37dc0.jpg?v=1690474634",
-        "link": "https://uwumarket.us/products/kirsche-cube-hat"
+        "product_name": "Kirsche Mouse Pad \u2013 Gamer Supps",
+        "price": "$39.99",
+        "image": "http://gamersupps.gg/cdn/shop/files/Mousepad_5ecd55e6-5b20-4ead-a1e7-798c0e3f2d09.png?v=1743177535",
+        "link": "https://gamersupps.gg/products/kirsche-mouse-pad"
     },
     {
-        "product_name": "Kirsche Vector Shorts",
+        "product_name": "Kirsche Jet Tag Keychain \u2013 UwU Market",
+        "price": "$15.00",
+        "image": "http://uwumarket.us/cdn/shop/files/Jet-Tag-Mock1.1_2_82ca08c8-06a4-463e-b90d-6c4ab695658d.jpg?v=1690473821",
+        "link": "https://uwumarket.us/products/kirsche-jet-tag-keychain"
+    },
+    {
+        "product_name": "Kirsche Vector T-Shirt \u2013 UwU Market",
+        "price": "$35.00",
+        "image": "http://uwumarket.us/cdn/shop/files/T-Shirtfront.jpg?v=1690472940",
+        "link": "https://uwumarket.us/products/kirsche-strapped-t-shirt"
+    },
+    {
+        "product_name": "Kirsche Weeb Tray \u2013 Gamer Supps",
+        "price": "$19.99",
+        "image": "http://gamersupps.gg/cdn/shop/files/Weeb_Tray_bf60983d-7be4-4b2b-b326-4f1d2174ccc6.png?v=1743177563",
+        "link": "https://gamersupps.gg/products/kirsche-weeb-tray"
+    },
+    {
+        "product_name": "Kirsche Vinyl Sticker \u2013 Gamer Supps",
+        "price": "$9.99",
+        "image": "http://gamersupps.gg/cdn/shop/files/Sticker1.png?v=1743177549",
+        "link": "https://gamersupps.gg/products/kirsche-vinyl-sticker"
+    },
+    {
+        "product_name": "Kirsche Vector Shorts \u2013 UwU Market",
         "price": "$40.00",
         "image": "http://uwumarket.us/cdn/shop/files/Short.jpg?v=1690473157",
         "link": "https://uwumarket.us/products/kirsche-strapped-shorts"
     },
     {
-        "product_name": "Kirsche LED Desk Lamp",
+        "product_name": "Kirsche Wonderland Poster \u2013 UwU Market",
+        "price": "$19.00",
+        "image": "http://uwumarket.us/cdn/shop/files/Poster_Mock_Filecopy_80c28111-2e90-40ee-bc3d-7798a9ef13d0.jpg?v=1690475588",
+        "link": "https://uwumarket.us/products/kirsche-wonderland-poster"
+    },
+    {
+        "product_name": "Kirsche Vector Sweatpants \u2013 UwU Market",
+        "price": "$79.00",
+        "image": "http://uwumarket.us/cdn/shop/files/Sweatpants.jpg?v=1690473600",
+        "link": "https://uwumarket.us/products/kirsche-strapped-sweatpants"
+    },
+    {
+        "product_name": "Kirsche Cube Rug \u2013 UwU Market",
+        "price": "$99.00",
+        "image": "http://uwumarket.us/cdn/shop/files/image_be17830a-0368-4950-92b6-1cea60bdd290.png?v=1699458546",
+        "link": "https://uwumarket.us/products/kirsche-cube-rug"
+    },
+    {
+        "product_name": "Kirsche Cube Hat \u2013 UwU Market",
+        "price": "$32.00",
+        "image": "http://uwumarket.us/cdn/shop/files/Hat-Mock1.1copy_c474bec3-3e29-404f-8e9d-5440dac37dc0.jpg?v=1690474634",
+        "link": "https://uwumarket.us/products/kirsche-cube-hat"
+    },
+    {
+        "product_name": "Kirsche LED Desk Lamp \u2013 UwU Market",
         "price": "$35.00",
         "image": "http://uwumarket.us/cdn/shop/files/krisnightlamp.jpg?v=1703276140",
         "link": "https://uwumarket.us/products/kirsche-led-desk-lamp"
     },
     {
-        "product_name": "Kirsche Vector Poster",
+        "product_name": "Kirsche Vector Poster \u2013 UwU Market",
         "price": "$19.00",
         "image": "http://uwumarket.us/cdn/shop/files/Poster_Mock_01094396-cfae-4e04-ac76-aa79f0a06509.jpg?v=1691108964",
         "link": "https://uwumarket.us/products/kirsche-vector-poster"
     },
     {
-        "product_name": "Kirsche Jet Tag Keychain",
-        "price": "$15.00",
-        "image": "http://uwumarket.us/cdn/shop/files/Jet-Tag-Mock1.1_2_82ca08c8-06a4-463e-b90d-6c4ab695658d.jpg?v=1690473821",
-        "link": "https://uwumarket.us/products/kirsche-jet-tag-keychain"
+        "product_name": "Kirsche Cube Throw Blanket \u2013 UwU Market",
+        "price": "$55.00",
+        "image": "http://uwumarket.us/cdn/shop/files/kirschemockblanket.png?v=1699473339",
+        "link": "https://uwumarket.us/products/kirsche-wonderland-throw-blanket"
     }
 ]
