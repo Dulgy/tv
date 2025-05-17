@@ -1,0 +1,26 @@
+[
+    {
+        "product_name": "Sleepy-Eepy Bundle AdvancedGG",
+        "price": "$79.99"
+        "image": "http://advanced.gg/cdn/shop/files/sleepy-eepy-2.png?v=1721398562",
+        "link": "https://advanced.gg/products/sleepy-eepy-bundle"
+    },
+    {
+        "product_name": "Phase Invaders Quest - Custom Roast Coffee Beans by Eepy ...",
+        "price": "$35.00",
+        "image": "http://shop.phase-connect.com/cdn/shop/files/QuestCoffeeSleepy_grande.png?v=1746297363",
+        "link": "https://shop.phase-connect.com/products/phase-invaders-quest-custom-roast-coffee-beans-by-eepy-sleepy-%E3%82%A4%E3%83%BC%E3%83%94%E3%83%BC-%E3%82%B9%E3%83%AA%E3%83%BC%E3%83%94%E3%83%BC"
+    },
+    {
+        "product_name": "Phase Invaders Quest - Eepy Sleepy Key Visual Model Standee",
+        "price": "$15.00",
+        "image": "http://shop.phase-connect.com/cdn/shop/files/QuestStandeeSleepyOfficial_grande.png?v=1746297363",
+        "link": "https://shop.phase-connect.com/products/phase-invaders-quest-eepy-sleepy-%E3%82%A4%E3%83%BC%E3%83%94%E3%83%BC-%E3%82%B9%E3%83%AA%E3%83%BC%E3%83%94%E3%83%BC-key-visual-model-standee"
+    },
+    {
+        "product_name": "Phase Invaders Quest - Eepy Sleepy Model Stande",
+        "price": "$15.00",
+        "image": "https://shop.phase-connect.com/cdn/shop/files/QuestStandeeClio_600x.png?v=1746297363",
+        "link": "https://shop.phase-connect.com/products/phase-invaders-quest-eepy-sleepy-%E3%82%A4%E3%83%BC%E3%83%94%E3%83%BC-%E3%82%B9%E3%83%AA%E3%83%BC%E3%83%94%E3%83%BC-official-model-standee"
+    }
+]
