@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Home",
+        "url": "https://dulgy.github.io/tv/Clio"
+    },
+    {
+        "name": "Schedule",
+        "url": "schudule.html"
+    },
+    {
+        "name": "X",
+        "url": "https://x.com/eepysleepych?lang=en"
+    },
+    {
+        "name": "Guides",
+        "url": "guides.html"
+    },
+    {
+        "name": "Watch-a-long",
+        "url": "/"
+    },
+    {
+        "name": "Merch",
+        "url": "http://shop.phase-connect.com"
+    },
+    {
+        "name": "Socials",
+        "url": "socials.html"
+    },
+    {
+        "name": "Donate",
+        "url": "https://streamelements.com/clioaite/tip"
+    }
+]
