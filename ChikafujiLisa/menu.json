@@ -1,36 +1,70 @@
 [
     {
-        "name": "Upcoming Events/Schedule",
-        "url": "https://www.youtube.com/@chikafujilisa/community"
+        "name": "Home",
+        "url": "https://dulgy.github.io/tv/"
     },
     {
-        "name": "Twitter/X",
-        "url": "https://www.x.com/chikafujilisa"
+        "name": "Pipkin Pippa",
+        "url": "../Pippa"
     },
     {
-        "name": "Past Streams",
-        "url": "https://www.youtube.com/@chikafujilisa/streams"
+        "name": "Kirsche",
+        "url": "../Kirsche"
     },
     {
-        "name": "Videos",
-        "url": "https://www.youtube.com/@chikafujilisa/videos"
+        "name": "Kaneko Lumi",
+        "url": "../KanekoLumi"
     },
     {
-        "name": "Tik Tok",
-        "url": "https://tiktok.com/@chikafujilisa"
-    },
-        {
-        "name": "Marshmellows",
-        "url": "https://marshmallow-qa.com/chikafujilisa"
+        "name": "Chisaka Airi",
+        "url": "../ChisakaAiri"
     },
     {
-        "name": "Tips",
-        "url": "https://streamelements.com/lisachikafuji/tip"
+        "name": "Dizzy Dokuro",
+        "url": "../DizzyDokuro"
     },
-
-	{
-        "name": "Gamersupps -10% Code Sheepy",
-        "url": "https://gamersupps.com/"
+    {
+        "name": "Clio Aite",
+        "url": "../Clio"
+    },
+    {
+        "name": "Tenma",
+        "url": "../Tenma"
+    },
+    {
+        "name": "Wilhelmina Frost",
+        "url": "../WilhelminaFrost"
+    },
+    {
+        "name": "Eepy Sleepy",
+        "url": "../Sleepy"
+    },
+    {
+        "name": "Chikafuji Lisa",
+        "url": "../ChikafujiLisa"
+    },
+    {
+        "name": "Bonnie Barkswell",
+        "url": "../BonnieBarkswell"
+    },
+    {
+        "name": "SmugAlana",
+        "url": "../SmugAlana"
+    },
+    {
+        "name": "Sayu Sincronicity",
+        "url": "../Sayu"
+    },
+    {
+        "name": "Powdur",
+        "url": "../Powdur"
+    },
+    {
+        "name": "Alien Mixture",
+        "url": "../AlienMixture"
+    },
+    {
+        "name": "Sidescrollers",
+        "url": "../Sidescrollers"
     }
-
 ]
