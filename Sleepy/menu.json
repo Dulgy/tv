@@ -1,38 +1,70 @@
 [
     {
         "name": "Home",
-        "url": "https://dulgy.github.io/tv/Sleepy"
+        "url": "https://dulgy.github.io/tv/"
     },
     {
-        "name": "Schedule",
-        "url": "schudule.html"
+        "name": "Pipkin Pippa",
+        "url": "../Pippa"
     },
     {
-        "name": "Twitch VODS",
-        "url": "https://www.youtube.com/@EepySleepyChArchive"
+        "name": "Kirsche",
+        "url": "../Kirsche"
     },
     {
-        "name": "X",
-        "url": "https://x.com/eepysleepych?lang=en"
+        "name": "Kaneko Lumi",
+        "url": "../KanekoLumi"
     },
     {
-        "name": "Guides",
-        "url": "guides.html"
+        "name": "Chisaka Airi",
+        "url": "../ChisakaAiri"
     },
     {
-        "name": "Watch-a-long",
-        "url": "/"
+        "name": "Dizzy Dokuro",
+        "url": "../DizzyDokuro"
     },
     {
-        "name": "Merch",
-        "url": "http://shop.phase-connect.com"
+        "name": "Clio Aite",
+        "url": "../Clio"
     },
     {
-        "name": "Socials",
-        "url": "socials.html"
+        "name": "Tenma",
+        "url": "../Tenma"
     },
     {
-        "name": "Donate",
-        "url": "https://streamelements.com/eepysleepy/tip"
+        "name": "Wilhelmina Frost",
+        "url": "../WilhelminaFrost"
+    },
+    {
+        "name": "Eepy Sleepy",
+        "url": "../Sleepy"
+    },
+    {
+        "name": "Chikafuji Lisa",
+        "url": "../ChikafujiLisa"
+    },
+    {
+        "name": "Bonnie Barkswell",
+        "url": "../BonnieBarkswell"
+    },
+    {
+        "name": "SmugAlana",
+        "url": "../SmugAlana"
+    },
+    {
+        "name": "Sayu Sincronicity",
+        "url": "../Sayu"
+    },
+    {
+        "name": "Powdur",
+        "url": "../Powdur"
+    },
+    {
+        "name": "Alien Mixture",
+        "url": "../AlienMixture"
+    },
+    {
+        "name": "Sidescrollers",
+        "url": "../Sidescrollers"
     }
 ]
